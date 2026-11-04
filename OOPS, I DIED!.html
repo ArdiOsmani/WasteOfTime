@@ -4,66 +4,181 @@
 <title>OOPS, I DIED!</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#0a0a0a;--paper:#f2efe6;--mut:#8a867b;--hot:#c8201a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#e9e5d9;--mut:#8f8b80}}
-:root[data-theme="dark"]{--paper:#e9e5d9;--mut:#8f8b80}
+:root{--ink:#0a0a0a;--paper:#f4f1e8;--mut:#8a867b;--hot:#d3241c;
+--torn:polygon(0% 3%,5% 0%,17% 2%,31% 0%,46% 2%,60% 0%,74% 2%,88% 0%,100% 3%,98.6% 25%,100% 48%,98.7% 72%,100% 97%,90% 100%,76% 98%,61% 100%,47% 98%,32% 100%,18% 98%,6% 100%,0% 96%,1.3% 70%,0% 47%,1.4% 24%);
+--torn2:polygon(1% 0%,14% 3%,30% 0%,48% 3%,66% 0%,83% 3%,100% 0%,97% 30%,100% 55%,97.5% 80%,100% 100%,84% 96%,66% 100%,48% 96%,30% 100%,14% 97%,0% 100%,2.5% 72%,0% 45%,2.5% 20%)}
+*{box-sizing:border-box}
 html,body{margin:0;background:var(--ink);color:var(--paper);font-family:'Patrick Hand','Comic Sans MS',cursive;font-size:17px}
-body{background-image:radial-gradient(circle,#2a2a2a 1px,transparent 1.5px);background-size:9px 9px}
-#app{max-width:560px;margin:0 auto;padding:12px}
-.A,h1,.big,.num{font-family:Anton,Impact,'Arial Narrow',sans-serif;text-transform:uppercase;letter-spacing:.02em}
-h1{font-size:3.1rem;line-height:.95;margin:6px 0 2px;text-align:center;transform:rotate(-1.5deg)}
-h1 span{background:var(--paper);color:var(--ink);padding:0 8px}
-.tag{text-align:center;color:var(--mut);margin-bottom:10px}
-.hud{display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;border:3px solid var(--paper);padding:6px 10px;margin:8px 0;font-family:Anton,Impact,sans-serif;letter-spacing:.04em}
-.hud b{font-size:1.4rem;color:var(--paper)}
-.mat{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--ink);border:4px solid var(--paper);padding:6px;margin:10px 0}
-.cell{background:var(--paper);color:var(--ink);padding:8px 10px;position:relative;cursor:pointer;user-select:none;min-height:84px;transform:rotate(var(--r,0deg))}
-.cell::after{content:"";position:absolute;right:0;bottom:0;width:46px;height:36px;background:radial-gradient(circle,var(--ink) 1.3px,transparent 1.8px) 0 0/6px 6px;-webkit-mask:linear-gradient(135deg,transparent 40%,#000);mask:linear-gradient(135deg,transparent 40%,#000);opacity:.7}
-.cell .big{font-size:1.5rem;line-height:1}
-.cell .od{font-family:Anton,Impact,sans-serif;font-size:2.3rem;line-height:1;float:right}
-.cell small{display:block;font-size:.88rem;line-height:1.05;margin-top:4px}
-.w2{grid-column:span 2}
-.place{background:var(--ink);color:var(--paper);border:0;display:flex;align-items:center;font-family:Anton,Impact,sans-serif;font-size:2rem;line-height:.95;cursor:default}
-.place::after{display:none}
-.chips{position:absolute;left:8px;bottom:6px;display:flex;gap:4px;align-items:center;z-index:2}
-.coin{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:1rem Anton,Impact,sans-serif;border:2px solid var(--paper);outline:2px solid var(--ink)}
-.chips button{background:var(--ink);color:var(--paper);border:0;width:24px;height:24px;border-radius:50%;font:1rem Anton,Impact,sans-serif;padding:0;cursor:pointer}
-.fing{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:end;margin:10px 0}
-.fing button{font:inherit;background:var(--ink);color:var(--paper);border:3px solid var(--paper);border-radius:30px 30px 10px 10px;padding:8px 2px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative}
-.fing button:nth-child(1){margin-top:34px}.fing button:nth-child(2){margin-top:6px}.fing button:nth-child(3){margin-top:0}.fing button:nth-child(4){margin-top:10px}.fing button:nth-child(5){margin-top:30px}
-.fing .num{background:var(--paper);color:var(--ink);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-size:1rem}
-.fing .nm{font-family:Anton,Impact,sans-serif;font-size:.78rem;line-height:1;text-align:center;text-transform:uppercase}
-.fing .st{font-size:.8rem;color:var(--mut)}
-.fing button.own{background:var(--paper);color:var(--ink)}.fing button.own .num{background:var(--ink);color:var(--paper)}.fing button.own .st{color:var(--ink)}
-.fing button.dead{border-style:dashed;opacity:.35;cursor:default}
-.fing button.pick{animation:pk .7s infinite alternate;border-color:var(--hot)}
-@keyframes pk{to{transform:translateY(-6px)}}
-.fing svg{width:26px;height:44px}
-.dice{display:flex;justify-content:center;gap:18px;align-items:center;margin:10px 0;min-height:90px}
-.dice svg{width:84px;height:84px}.dice.go svg{animation:sh .4s}
-@keyframes sh{0%{transform:rotate(-30deg) translateY(-10px)}60%{transform:rotate(18deg)}100%{transform:none}}
-.puck{width:64px;height:64px;border-radius:50%;background:var(--paper);color:var(--ink);display:grid;place-items:center;text-align:center;font:1.5rem/1 Anton,Impact,sans-serif;border:4px solid var(--ink);outline:3px solid var(--paper)}
-.puck small{display:block;font-size:.55rem}
-.say{border:3px solid var(--paper);padding:8px 12px;margin:10px 0;min-height:2.4em;transform:rotate(.4deg)}
-.say b{font-family:Anton,Impact,sans-serif;font-weight:400}
-.acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
-button.b{font:1.35rem Anton,Impact,sans-serif;text-transform:uppercase;background:var(--paper);color:var(--ink);border:0;padding:8px 18px;cursor:pointer;transform:rotate(-1deg)}
-button.b.alt{background:transparent;color:var(--paper);border:3px solid var(--paper)}
+body{background-color:var(--ink);background-image:
+url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cg fill='%23f4f1e8' opacity='.55'%3E%3Cpath d='M30 40h6M33 37v6M31 38l4 4M35 38l-4 4'/%3E%3Cpath d='M180 90h6M183 87v6' /%3E%3Cpath d='M90 190h6M93 187v6M91 188l4 4M95 188l-4 4'/%3E%3Cpath d='M220 220h5M222.500 217.500v5'/%3E%3Ccircle cx='140' cy='30' r='1.4'/%3E%3Ccircle cx='60' cy='120' r='1.2'/%3E%3Ccircle cx='230' cy='160' r='1.5'/%3E%3Ccircle cx='20' cy='220' r='1.2'/%3E%3Ccircle cx='120' cy='240' r='1.3'/%3E%3C/g%3E%3C/svg%3E"),
+radial-gradient(circle,#262626 1.1px,transparent 1.5px);background-size:260px 260px,8px 8px;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+#app{max-width:1000px;margin:0 auto;padding:10px 10px 0;position:relative}
+.A,.big,.num{font-family:Anton,Impact,'Arial Narrow',sans-serif;text-transform:uppercase;letter-spacing:.02em}
+svg{display:block}
+b{font-weight:400;font-family:Anton,Impact,sans-serif;letter-spacing:.02em}
+.say b,.hint b,.res b,.tc b,.leg b{font-size:.95em}
+
+/* ---------- toolbar + header ---------- */
+.toolbar{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px}
+button.b{font:1.3rem/1 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.03em;background:var(--paper);color:var(--ink);border:0;padding:10px 20px;cursor:pointer;clip-path:var(--torn);transition:transform .1s,filter .1s}
+button.b:hover:not(:disabled){transform:rotate(-1.2deg) scale(1.03)}
+button.b:active:not(:disabled){transform:scale(.97)}
+button.b.alt{background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 3px var(--paper)}
+button.b.sm{font-size:.95rem;padding:7px 14px}
 button.b:disabled{opacity:.35;cursor:default}
-.leg{font-size:.88rem;color:var(--mut);line-height:1.15}
-.leg b{color:var(--paper);font-family:Anton,Impact,sans-serif;font-weight:400}
-.over{text-align:center;border:4px solid var(--paper);padding:14px;margin:12px 0}
-.over .big{font-size:2.4rem} #app{position:relative} .tray{background:radial-gradient(circle,#1c1c1c 1px,transparent 1.5px) 0 0/8px 8px,#050505;border:4px solid var(--paper);box-shadow:inset 0 0 0 4px var(--ink),inset 0 0 0 6px var(--mut);padding:18px 8px 12px;margin:16px 0 10px;position:relative} .tray .lab{position:absolute;top:-14px;left:12px;background:var(--ink);padding:0 8px;font-family:Anton,Impact,sans-serif;letter-spacing:.06em} .tray .dice{margin:0} .dice.tum svg{filter:drop-shadow(4px 6px 0 #000)} .hint{text-align:center;padding:6px 10px;margin:8px 0;border:2px dashed var(--mut)} .res{text-align:center;font:1.6rem/1.1 Anton,Impact,sans-serif;text-transform:uppercase;padding:8px;margin:8px 0;animation:st .35s cubic-bezier(.2,1.6,.4,1)} .res small{display:block;font:.95rem 'Patrick Hand',cursive;text-transform:none;letter-spacing:0} .res.good{background:var(--paper);color:var(--ink)} .res.bad{background:var(--hot);color:#fff} .res.neu{border:3px solid var(--paper)} .stamp{text-align:center;margin:14px 0;animation:st .5s cubic-bezier(.2,1.6,.4,1)} .stamp .big{font-size:3.4rem;line-height:1;display:inline-block;padding:2px 16px;border:6px solid;transform:rotate(-6deg)} .stamp.good .big{color:var(--paper)} .stamp.bad .big{color:var(--hot)} @keyframes st{from{transform:scale(2.6);opacity:0}to{transform:none;opacity:1}} .rows{margin:8px 0;border:3px solid var(--paper)} .rows div{display:flex;justify-content:space-between;padding:4px 10px;border-top:1px solid var(--mut)} .rows div:first-child{border-top:0} .rows .w{background:var(--paper);color:var(--ink)} .rows .l{color:var(--mut);text-decoration:line-through} .safe{position:absolute;left:8px;top:-10px;background:var(--ink);color:var(--paper);font:.75rem Anton,Impact,sans-serif;padding:1px 6px;text-transform:uppercase;z-index:2} body.shake #app{animation:shk .45s} @keyframes shk{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}} .help{position:absolute;right:8px;top:8px;font-size:1rem!important;padding:4px 10px!important} .tut{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9;display:flex;align-items:center;justify-content:center;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom))} .tc{max-width:480px;width:100%;max-height:100%;overflow:auto;border:4px solid var(--paper);padding:16px;background:var(--ink)} .tc h2{font:2rem/1 Anton,Impact,sans-serif;text-transform:uppercase;margin:0 0 8px} .tc p{margin:8px 0;line-height:1.25} .tc .ex{display:flex;gap:8px;align-items:center;justify-content:center;margin:10px 0;flex-wrap:wrap} .tc .ex svg{width:50px;height:50px} .tc .ex b{font:1.5rem Anton,Impact,sans-serif} .tc .win{background:var(--paper);color:var(--ink);padding:2px 8px} .tc .lose{background:var(--hot);color:#fff;padding:2px 8px} .dots{text-align:center;margin:10px 0;letter-spacing:6px}
-.mute{position:absolute;left:8px;top:8px;font-size:1rem!important;padding:4px 10px!important;z-index:3}
+.top{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}
+@media(min-width:860px){.top{grid-template-columns:minmax(0,370px) 1fr;gap:18px}}
+.logo{background:#fff;transform:rotate(-1deg);clip-path:var(--torn2);padding:2px 0;max-width:420px;margin:0 auto}
+.logo svg{width:100%;height:auto}
+.tag{font-size:.95rem;color:var(--mut);text-align:center;margin:6px 0 0}
+.hud{display:flex;gap:8px;margin-top:10px}
+.hud span{flex:1;background:var(--ink);box-shadow:inset 0 0 0 3px var(--paper);padding:6px 10px;font:700 .9rem/1.1 Anton,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:var(--mut)}
+.hud span b{display:block;font-size:1.9rem;line-height:1;color:var(--paper)}
+
+/* ---------- Death card ---------- */
+.death{display:grid;grid-template-columns:minmax(110px,36%) 1fr;gap:12px;align-items:center}
+.portrait{border:3px solid var(--paper);background:#fff;line-height:0;transform:rotate(.8deg)}
+.portrait svg{width:100%;height:auto}
+.say{position:relative;filter:drop-shadow(0 0 0 #000)}
+.say .paper{background:#fff;color:var(--ink);padding:14px 18px;clip-path:var(--torn);min-height:5.2em;font-size:1.05rem;line-height:1.2}
+.say::before{content:"";position:absolute;left:-13px;top:34px;border:11px solid transparent;border-right:15px solid #fff;border-left:0;z-index:2}
+.say .who{display:block;font:1.15rem/1 Anton,Impact,sans-serif;letter-spacing:.06em;margin-bottom:4px}
+
+/* ---------- roll zone ---------- */
+.tray{background:radial-gradient(circle,#1d1d1d 1px,transparent 1.5px) 0 0/7px 7px,#050505;border:4px solid var(--paper);box-shadow:inset 0 0 0 4px var(--ink),inset 0 0 0 6px var(--mut);padding:20px 8px 14px;margin:20px 0 10px;position:relative}
+.lab{position:absolute;top:-14px;left:12px;background:var(--ink);padding:0 8px;font:700 .95rem/1.3 Anton,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.dice{display:flex;justify-content:center;gap:20px;align-items:center;min-height:92px}
+.dice svg{width:84px;height:84px;filter:drop-shadow(3px 4px 0 #000)}
+.dice.go svg{animation:sh .45s}
+@keyframes sh{0%{transform:rotate(-30deg) translateY(-12px)}60%{transform:rotate(18deg)}100%{transform:none}}
+.puck{width:66px;height:66px;border-radius:50%;background:var(--paper);color:var(--ink);display:grid;place-items:center;text-align:center;font:1.6rem/1 Anton,Impact,sans-serif;box-shadow:0 0 0 4px var(--ink),0 0 0 7px var(--paper)}
+.puck small{display:block;font-size:.55rem;letter-spacing:.08em}
+
+/* ---------- notes ---------- */
+.hint{text-align:center;padding:7px 12px;margin:8px 0;border:2px dashed var(--mut)}
+.res{text-align:center;font:1.6rem/1.1 Anton,Impact,sans-serif;text-transform:uppercase;padding:10px 12px 12px;margin:8px 0;animation:st .35s cubic-bezier(.2,1.6,.4,1);clip-path:var(--torn)}
+.res small{display:block;font:1rem 'Patrick Hand',cursive;text-transform:none;letter-spacing:0;margin-top:2px}
+.res.good{background:var(--paper);color:var(--ink)}
+.res.bad{background:var(--hot);color:#fff}
+.res.neu{box-shadow:inset 0 0 0 3px var(--paper)}
+.stamp{text-align:center;margin:12px 0;animation:st .5s cubic-bezier(.2,1.6,.4,1)}
+.stamp .big{font-size:3.4rem;line-height:1;display:inline-block;padding:2px 18px;border:6px solid;transform:rotate(-6deg)}
+.stamp.good .big{color:var(--paper)}
+.stamp.bad .big{color:var(--hot)}
+@keyframes st{from{transform:scale(2.6);opacity:0}to{transform:none;opacity:1}}
+.rows{margin:8px 0;background:var(--ink);box-shadow:0 0 0 3px var(--paper)}
+.rows div{display:flex;justify-content:space-between;padding:5px 12px;border-top:1px solid var(--mut)}
+.rows div:first-child{border-top:0}
+.rows .w{background:var(--paper);color:var(--ink)}
+.rows .l{color:var(--mut);text-decoration:line-through}
+.auto-hint{text-align:center;color:var(--mut);font-size:.95rem;margin:4px 0;animation:fadePulse 1.2s ease-in-out infinite}
+@keyframes fadePulse{50%{opacity:.4}}
+
+/* ---------- stage: skull bar | board | hand ---------- */
+.stage{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;margin:16px 0 10px;align-items:start}
+.stage .handbox{grid-column:1/-1;max-width:420px;width:100%;justify-self:center}
+@media(min-width:860px){.stage{grid-template-columns:84px minmax(0,1fr) minmax(0,1fr);gap:14px}.stage .handbox{grid-column:auto;max-width:none}}
+.bar{position:sticky;top:8px;align-self:start;display:flex;flex-direction:column;align-items:center;gap:6px;height:520px}
+.barframe{position:relative;flex:1;width:100%;border:3px solid var(--paper);background:radial-gradient(circle,#1d1d1d 1px,transparent 1.5px) 0 0/6px 6px,#050505;box-shadow:inset 0 0 0 3px var(--ink),inset 0 0 0 4px #444;display:flex;flex-direction:column;align-items:center;padding:16px 0 6px;min-height:230px}
+.barframe .lab{left:50%;transform:translateX(-50%);font-size:.8rem;top:-12px;padding:0 6px}
+.bar-stack{position:relative;flex:1;width:100%;min-height:150px}
+.skull{position:absolute;left:50%;top:calc(var(--i) * var(--step,24px));width:var(--sk,48px);height:var(--sk,48px);margin-left:calc(var(--sk,48px) / -2);transform:rotate(var(--rot));z-index:calc(var(--i) + 1);filter:drop-shadow(0 -2px 0 #000)}
+.skull svg{width:100%;height:100%}
+.skull.new{animation:drop .32s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes drop{from{transform:translateY(-34px) rotate(var(--rot)) scale(.6);opacity:0}to{opacity:1}}
+.allin{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font:700 .9rem/1.05 Anton,Impact,sans-serif;color:var(--mut);letter-spacing:.06em}
+.bar-n{text-align:center;line-height:1;padding-top:4px;border-top:1px dashed #444;width:84%}
+.bar-n b{display:block;font-size:2.2rem}
+.bar-n small{display:block;font:700 .72rem/1.1 Anton,Impact,sans-serif;letter-spacing:.08em;color:var(--mut);text-transform:uppercase}
+.reset{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;background:var(--paper);color:var(--ink);border:0;padding:6px 2px 7px;font:700 .85rem/1 Anton,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;clip-path:var(--torn);transition:transform .12s}
+.reset i{font:normal 1.5rem/1 Anton,Impact,sans-serif;display:block}
+.reset:hover:not(:disabled){transform:rotate(-3deg) scale(1.05)}
+.reset:disabled{opacity:.3;cursor:default}
+
+.board,.handbox{position:relative;border:3px solid var(--paper);background:#fff;line-height:0;container-type:inline-size}
+.board svg,.handbox>svg{width:100%;height:auto}
+.ov{position:absolute;inset:0;pointer-events:none;line-height:1}
+.bhit,.fhit{position:absolute;pointer-events:auto;cursor:default;-webkit-tap-highlight-color:transparent}
+.bhit.hot{cursor:pointer;outline:2px dashed var(--hot);outline-offset:-4px;animation:hotp 1.4s ease-in-out infinite}
+@keyframes hotp{50%{outline-color:rgba(211,36,28,.15)}}
+.bhit.hot:hover{background:rgba(211,36,28,.12)}
+.tok{position:absolute;display:flex;align-items:center;gap:5px;background:var(--ink);padding:3px 6px 3px 8px;border-radius:999px;box-shadow:0 0 0 2px #fff,0 4px 0 2px rgba(0,0,0,.45)}
+.tok .stk{display:flex;align-items:center}
+.tok .sk{width:30px;width:clamp(22px,8.5cqw,36px);height:30px;height:clamp(22px,8.5cqw,36px);margin-left:-11px;margin-left:calc(clamp(22px,8.5cqw,36px) * -.34)}
+.tok .sk:first-child{margin-left:0}
+.tok .sk svg{width:100%;height:100%}
+.tok .sk.new{animation:pop .3s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes pop{from{transform:translateY(-22px) scale(.5);opacity:0}to{opacity:1}}
+.tok .cnt{min-width:20px;font:700 1.15rem/1 Anton,Impact,sans-serif;text-align:center;color:var(--paper)}
+.tok .minus{pointer-events:auto;width:22px;height:22px;border-radius:50%;border:2px solid var(--paper);background:var(--ink);color:var(--paper);font:1rem/1 Anton,Impact,sans-serif;padding:0;cursor:pointer}
+.tok .minus:hover{background:var(--hot);border-color:var(--hot)}
+
+/* hand finger states (svg elements are tagged .fb body / .fk bones / .f-<name>) */
+.fb,.fk{transition:fill .25s,stroke .25s}
+.fb[data-s=own]{fill:#fff;stroke:#0a0a0a;stroke-width:3.5}
+.fk[data-s=own]{fill:#0a0a0a}
+.fb[data-s=can]{stroke:#fff;stroke-width:2.6;stroke-dasharray:7 5;animation:ants 1s linear infinite}
+@keyframes ants{to{stroke-dashoffset:-24}}
+.fb[data-s=dead]{fill:#fff;stroke:#0a0a0a;stroke-width:2;stroke-dasharray:6 5;opacity:.55}
+.fk[data-s=dead]{display:none}
+.fb[data-s=pick]{fill:var(--hot);animation:pickp .7s ease-in-out infinite alternate}
+.fk[data-s=pick]{fill:#fff}
+@keyframes pickp{to{fill:#8d1712}}
+.fhit.own,.fhit.dead,.fhit.idle{cursor:default}
+.fhit.can,.fhit.pick{cursor:pointer}
+.fhit:hover.can,.fhit:hover.pick{background:rgba(255,255,255,.08)}
+.fst{position:absolute;display:grid;place-items:center;width:26px;height:26px;width:clamp(18px,7cqw,28px);height:clamp(18px,7cqw,28px);border-radius:50%;background:var(--paper);color:var(--ink);font:700 1.25rem/1 Anton,Impact,sans-serif;box-shadow:0 0 0 2px var(--ink)}
+.fhit.thumb .fst{left:50%;top:5%;transform:translateX(-50%)}
+.fhit:not(.thumb) .fst{left:4%;top:50%;transform:translateY(-50%)}
+.fhit.can .fst{animation:bob .9s ease-in-out infinite}
+.fhit.own .fst{background:var(--ink);color:var(--paper);box-shadow:0 0 0 2px var(--paper)}
+.fhit.pick .fst{background:#fff;color:var(--hot)}
+.fhit.dead .fst{background:#444;color:#bbb}
+@keyframes bob{50%{box-shadow:0 0 0 2px var(--ink),0 0 0 6px rgba(244,241,232,.55)}}
+
+/* ---------- action bar ---------- */
+.acts{position:sticky;bottom:0;z-index:6;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;padding:22px 8px calc(10px + env(safe-area-inset-bottom,0px));margin:0 -10px;background:linear-gradient(to bottom,rgba(10,10,10,0),rgba(10,10,10,.94) 34%,#0a0a0a);min-height:84px}
+.acts .say2{width:100%;text-align:center}
+.leg{font-size:.9rem;color:var(--mut);text-align:center;padding:4px 0 0}
+
+/* ---------- game over ---------- */
+.over{display:grid;grid-template-columns:minmax(150px,240px) 1fr;gap:16px;align-items:center;margin:14px 0;padding:14px;background:var(--ink);box-shadow:0 0 0 4px var(--paper);}
+@media(max-width:560px){.over{grid-template-columns:1fr;justify-items:center;text-align:center}.over .tomb{max-width:240px}}
+.tomb{position:relative;line-height:0;background:#fff;transform:rotate(-1.5deg)}
+.tomb svg{width:100%;height:auto}
+.rankmark{position:absolute;pointer-events:none;border:3px dashed var(--hot);background:rgba(211,36,28,.14);animation:hotp 1s ease-in-out infinite}
+.rankmark::after{content:"YOU";position:absolute;right:-6px;top:50%;transform:translate(100%,-50%) rotate(4deg);background:var(--hot);color:#fff;font:700 .8rem/1 Anton,Impact,sans-serif;padding:3px 6px;letter-spacing:.06em}
+.over .big{font-size:2.6rem;line-height:1;margin:0 0 8px}
+.over p{margin:6px 0}
+
+/* ---------- tutorial ---------- */
+.tut{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:20;display:flex;align-items:center;justify-content:center;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom))}
+.tc{max-width:480px;width:100%;max-height:100%;overflow:auto;border:4px solid var(--paper);padding:16px;background:var(--ink)}
+.tc h2{font:2rem/1 Anton,Impact,sans-serif;text-transform:uppercase;margin:0 0 8px}
+.tc p{margin:8px 0;line-height:1.25}
+.tc .ex{display:flex;gap:8px;align-items:center;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.tc .ex svg{width:56px;height:56px}
+.tc .ex b{font:1.5rem Anton,Impact,sans-serif}
+.tc .win{background:var(--paper);color:var(--ink);padding:2px 8px}
+.tc .lose{background:var(--hot);color:#fff;padding:2px 8px}
+.tc .acts{position:static;background:none;padding:6px 0 0;margin:0;min-height:0}
+.dots{text-align:center;margin:10px 0;letter-spacing:6px}
+body.shake #app{animation:shk .45s}
+@keyframes shk{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 </style></head>
 <body><div id="app"></div>
+<script src="art/art.js"></script>
 <script>
+if(!window.ART){document.body.innerHTML='<p style="padding:24px;font:20px sans-serif">Missing <b>art/art.js</b> — keep the <b>art</b> folder next to this file.</p>';throw new Error('art.js missing');}
 const $=s=>document.querySelector(s),rd=()=>1+Math.floor(Math.random()*6),sum=d=>d[0]+d[1];
 const FING=[{k:'thumb',n:'Thumbs Up',c:2,d:'Reroll both dice once.'},{k:'index',n:'Point Taken',c:3,d:'Reroll one die once.'},{k:'bird',n:'The Bird',c:1,d:'A losing Come-Out roll sets a Point instead.'},{k:'ring',n:'Ring-a-Ding',c:4,d:'Double the profit of one winning bet.'},{k:'pinky',n:'Pinky Promise',c:1,d:'If craps wins, repay 1× instead of 2×. If craps loses, lose a finger.'}];
-const BETS=[{k:'pass',n:'Pass Line',o:1,d:'Win the craps round',c:'w2',r:-.6},{k:'hunt',n:'Point Hunter',o:2,d:'Win by hitting the Point',r:.7},{k:'seven',n:'Lucky Seven',o:4,d:'Roll 7 on the Come-Out',r:-.8},{k:'eleven',n:'Eleven Heaven',o:15,d:'Roll 11 on the Come-Out',c:'w2',r:.4},{k:'snake',n:'Snake Eyes',o:30,d:'Roll double ones on the Come-Out',r:-.5}];
-const RANKS=[[15,'Undying'],[12,'Death’s Headache'],[9,'Grave Dodger'],[6,'Dead Meat'],[1,'Worm Food']];
-const BONE='<svg viewBox="0 0 26 44"><g fill="currentColor"><circle cx="8" cy="7" r="5"/><circle cx="18" cy="7" r="5"/><rect x="10.5" y="8" width="5" height="28"/><circle cx="8" cy="37" r="5"/><circle cx="18" cy="37" r="5"/></g></svg>';
-let S,best=0,seen=0,muted=0,AC=null,music=null;
+const BETS=[{k:'pass',n:'Pass Line',o:1,tp:'right:3%;bottom:6%'},{k:'hunt',n:'Point Hunter',o:2,tp:'right:4%;bottom:5%'},{k:'seven',n:'Lucky Seven',o:4,tp:'left:5%;bottom:5%'},{k:'eleven',n:'Eleven Heaven',o:15,tp:'right:3%;bottom:8%'},{k:'snake',n:'Snake Eyes',o:30,tp:'left:4%;bottom:6%'}];
+const RANKS=[[15,'Undying','undying'],[12,'Death’s Headache','pita'],[9,'Grave Dodger','grave'],[6,'Dead Meat','meat'],[1,'Worm Food','worm']];
+const SKULL=`<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="#fff" stroke="#0a0a0a" stroke-width="1.7" stroke-linejoin="round"><g transform="rotate(29 32 49.5)"><path d="M9.5 47.6 31 47 54.6 47.9 54.4 51.8 31.5 52.3 9.6 51.6Z"/><circle cx="8.6" cy="46.9" r="3.5"/><circle cx="8.9" cy="52.4" r="3.5"/><circle cx="55.6" cy="47" r="3.5"/><circle cx="55.3" cy="52.6" r="3.5"/></g><g transform="rotate(-29 32 49.5)"><path d="M9.5 47.7 32 47.2 54.5 47.6 54.6 51.7 32 52.4 9.4 51.9Z"/><circle cx="8.7" cy="47.2" r="3.5"/><circle cx="8.6" cy="52.2" r="3.5"/><circle cx="55.4" cy="46.9" r="3.5"/><circle cx="55.6" cy="52.3" r="3.5"/></g><path d="M32 3C20.6 2.8 13.2 10.6 13.8 21.2 14 26.2 16.4 29.6 19 31.6L19.6 38.2 22.4 40.4 23.2 45.6 28.4 46.4 29.4 44.4 35 44.4 36 46.4 41 45.6 41.8 40.4 44.6 38.2 45.2 31.6C47.8 29.6 50.2 26.2 50.4 21.2 51 10.6 43.6 2.8 32 3Z"/></g><g fill="#0a0a0a"><path d="M17.4 19.2C17.2 14.8 21.2 13.2 25.2 14.6 28.8 16 29.4 20.8 27.8 24.2 26.2 27.2 20.4 27.4 18.6 24.4 17.8 22.8 17.5 21 17.4 19.2Z"/><path d="M46.6 19.2C46.8 14.8 42.8 13.2 38.8 14.6 35.2 16 34.6 20.8 36.2 24.2 37.8 27.2 43.6 27.4 45.4 24.4 46.2 22.8 46.5 21 46.6 19.2Z"/><path d="M30 29.4 34 29.4 35.4 36.4 32.8 34.8 32 36.8 31.2 34.8 28.6 36.4Z"/></g><g fill="none" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23.4 38.8H40.6M23.4 42.4H40.6M27.2 38.8V45.2M32 38.8V44.4M36.8 38.8V45.2"/><path d="M42 4.6 39.4 10 41.4 13.4 39.2 17.4"/><path d="M44.4 25.4 47.4 22.6M44.8 28.2 48 25.4" stroke-width=".9"/></g></svg>`;
+
+let S,best=0,seen=0,muted=0,AC=null,music=null,autoT=null,prevBar=0,prevTok={};
+
+/* ---------- audio ---------- */
 function unlockAudio(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();music=new Audio('Song1.mp3');music.loop=true;music.volume=.28;}if(AC.state==='suspended')AC.resume();if(!muted&&music.paused)music.play().catch(()=>{});}
 function toggleMute(){unlockAudio();muted=!muted;if(muted){music.pause();music.currentTime=0;}else music.play().catch(()=>{});render();}
 function beep(freq,dur,type,vol,slide){if(muted||!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type=type||'square';o.frequency.setValueAtTime(freq,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(40,freq*slide),t+dur);g.gain.setValueAtTime(vol||.08,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+dur+.02);}
@@ -71,6 +186,7 @@ function noise(dur,vol,bp){if(muted||!AC)return;const t=AC.currentTime,n=AC.crea
 const sfx={
   coin(){beep(880,.06,'triangle',.09);beep(1320,.09,'triangle',.06);},
   uncoin(){beep(660,.05,'triangle',.06,0.6);},
+  reset(){for(let i=0;i<4;i++)setTimeout(()=>{noise(.05,.1,1800+i*300);beep(700-i*90,.06,'triangle',.06,.6);},i*55);},
   click(){beep(420,.04,'square',.05);},
   buy(){beep(520,.07,'sawtooth',.06);beep(780,.12,'triangle',.07);},
   dice(){noise(.05,.14,1400+Math.random()*800);beep(180+Math.random()*80,.03,'square',.04);},
@@ -83,52 +199,109 @@ const sfx={
 };
 document.addEventListener('pointerdown',unlockAudio,{once:true});
 document.addEventListener('keydown',unlockAudio,{once:true});
-function init(){S={tut:seen?-1:0,rows:'',round:1,coins:1,bets:{pass:0,hunt:0,seven:0,eleven:0,snake:0},alive:{thumb:1,index:1,bird:1,ring:1,pinky:1},own:{},phase:'bet',stage:'come',point:null,dice:[0,0],comeDice:null,loss:0,go:0,wins:[],win:false,hit:false,recap:'',msg:'Oops. You died. That’s not good… Place your bets, friend.'};}
+
+/* ---------- state + rules ---------- */
+function init(){S={tut:seen?-1:0,rows:'',round:1,coins:1,bets:{pass:0,hunt:0,seven:0,eleven:0,snake:0},alive:{thumb:1,index:1,bird:1,ring:1,pinky:1},own:{},bought:{},phase:'bet',stage:'come',point:null,dice:[0,0],comeDice:null,loss:0,go:0,wins:[],win:false,hit:false,recap:'',msg:'Oops. You died. That’s not good… Place your bets, friend.'};prevBar=0;prevTok={};}
 const tot=()=>Object.values(S.bets).reduce((a,b)=>a+b,0),free=()=>S.coins-tot();
+function hasReviewChoices(){const t=sum(S.dice);return !!(S.own.thumb||S.own.index||(S.own.bird&&S.stage==='come'&&[2,3,12].includes(t)));}
+function clearAuto(){if(autoT){clearTimeout(autoT);autoT=null;}}
+function scheduleAuto(fn,ms){clearAuto();autoT=setTimeout(()=>{autoT=null;fn();},ms);}
+/* dice with X pips like the cover art */
 function die(v,r){const P={0:[],1:[[2,2]],2:[[1,1],[3,3]],3:[[1,1],[2,2],[3,3]],4:[[1,1],[3,1],[1,3],[3,3]],5:[[1,1],[3,1],[2,2],[1,3],[3,3]],6:[[1,1],[3,1],[1,2],[3,2],[1,3],[3,3]]}[v];
-return `<svg viewBox="0 0 80 80"${r!=null?` style="transform:rotate(${r}deg) translateY(${Math.abs(r%9)}px)"`:''}><rect x="4" y="4" width="72" height="72" rx="13" fill="#0a0a0a" stroke="#f2efe6" stroke-width="4"/>${v?'':'<text x="40" y="54" text-anchor="middle" font-family="Anton,Impact" font-size="40" fill="#f2efe6">?</text>'}${P.map(([x,y])=>`<circle cx="${x*20}" cy="${y*20}" r="${v===1?9:6.5}" fill="#f2efe6"/>`).join('')}</svg>`;}
+const s=v===1?10:6.2;
+const x=P.map(([a,b])=>`<path d="M${a*20-s} ${b*20-s}L${a*20+s} ${b*20+s}M${a*20+s} ${b*20-s}L${a*20-s} ${b*20+s}"/>`).join('');
+return `<svg viewBox="0 0 80 80"${r!=null?` style="transform:rotate(${r}deg) translateY(${Math.abs(r%9)}px)"`:''}><path d="M8 10 71 6 75 70 10 74Z" fill="#8d897d" transform="translate(3 4)"/><path d="M8 10 71 6 75 70 10 74Z" fill="#f4f1e8" stroke="#0a0a0a" stroke-width="3.5" stroke-linejoin="round"/>${v?`<g fill="none" stroke="#0a0a0a" stroke-width="${v===1?5.5:4.2}" stroke-linecap="round">${x}</g>`:'<text x="40" y="55" text-anchor="middle" font-family="Anton,Impact" font-size="40" fill="#0a0a0a">?</text>'}</svg>`;}
 function bet(k,n){if(S.phase!=='bet')return;if(n>0&&free()<1)return;if(n<0&&S.bets[k]<1)return;S.bets[k]+=n;n>0?sfx.coin():sfx.uncoin();render();}
+function resetSpend(){if(S.phase!=='bet')return;const bought=S.bought||{};const hasBought=Object.keys(bought).length>0;if(tot()===0&&!hasBought)return;
+for(const k of Object.keys(bought)){S.coins+=bought[k];S.own[k]=0;}S.bought={};S.bets={pass:0,hunt:0,seven:0,eleven:0,snake:0};prevTok={};sfx.reset();render();}
 function buy(k){const f=FING.find(x=>x.k===k);if(S.phase==='lose'){if(!S.alive[k])return;S.alive[k]=0;S.own[k]=0;S.loss--;sfx.snip();S.recap+=` You give up your ${f.n.toLowerCase()} finger.`;if(!Object.values(S.alive).some(x=>x)){S.phase='over';best=Math.max(best,S.round);}else if(S.loss<=0)next();render();return;}
-if(S.phase!=='bet'||!S.alive[k]||S.own[k]||free()<f.c)return;S.coins-=f.c;S.own[k]=1;sfx.buy();render();}
+if(S.phase!=='bet'||!S.alive[k]||S.own[k]||free()<f.c)return;S.coins-=f.c;S.own[k]=1;S.bought[k]=f.c;sfx.buy();render();}
 function tumble(keep,nd){S.phase='rolling';S.msg='Rolling… come on, come on…';sfx.dice();render();let n=0;const iv=setInterval(()=>{n++;sfx.dice();const e=$('#dice');if(e)e.innerHTML=[0,1].map(i=>i===keep?die(S.dice[i],0):die(rd(),Math.floor(Math.random()*90-45))).join('')+pk();if(n>=11){clearInterval(iv);S.dice=nd;S.go=1;S.phase='review';sfx.land();S.msg=S.stage==='come'?'Come-out roll. Reroll, or lock it in.':`Point is ${S.point}. Reroll, or lock it in.`;render();}},90);}
 function roll(){sfx.click();tumble(-1,[rd(),rd()]);}
 function pk(){return S.point?`<div class='puck'><div>${S.point}<small>POINT</small></div></div>`:'';}
 function re(i){let nd;if(i===2){if(!S.own.thumb)return;S.own.thumb=0;nd=[rd(),rd()];}else{if(!S.own.index)return;S.own.index=0;nd=[...S.dice];nd[i]=rd();}sfx.choose();tumble(i===2?-1:1-i,nd);}
 function bird(){S.comeDice=[...S.dice];S.point=sum(S.dice);S.own.bird=0;S.stage='point';S.phase='roll';sfx.choose();S.msg=`The Bird! ${S.point} is your Point instead. Death is… amused.`;render();}
-function cont(){sfx.click();const t=sum(S.dice);
+function cont(){clearAuto();if(S.phase!=='review')return;sfx.click();const t=sum(S.dice);
 if(S.stage==='come'){S.comeDice=[...S.dice];if(t===7||t===11)return fin(1,0,`A natural ${t}!`);if([2,3,12].includes(t))return fin(0,0,`Craps. ${t}. Ouch.`);S.point=t;S.stage='point';S.phase='roll';S.msg=`Point is ${t}. Roll it again before a 7.`;}
 else{if(t===S.point)return fin(1,1,`You hit the Point (${t})!`);if(t===7)return fin(0,0,'Seven out. Death smiles.');S.phase='roll';S.msg=`${t}. Nothing happens. Roll again.`;}render();}
 function fin(win,hit,m){S.win=win;S.hit=hit;S.msg=m;const c=sum(S.comeDice),b=S.bets,w=[];
 if(b.pass&&win)w.push('pass');if(b.hunt&&hit)w.push('hunt');if(b.seven&&c===7)w.push('seven');if(b.eleven&&c===11)w.push('eleven');if(b.snake&&S.comeDice[0]===1&&S.comeDice[1]===1)w.push('snake');
 S.wins=w;if(S.own.ring&&w.length){sfx.choose();S.phase='ring';render();}else settle(null);}
-function settle(rk){if(rk!==undefined&&S.phase==='ring')sfx.choose();let pay=0,lines=[];for(const k of S.wins){const B=BETS.find(x=>x.k===k),pr=S.bets[k]*B.o*(rk===k?2:1);pay+=S.bets[k]+pr;lines.push(`${B.n} +${pr}`);}
+function settle(rk){if(rk!==undefined&&S.phase==='ring')sfx.choose();let pay=0;for(const k of S.wins){const B=BETS.find(x=>x.k===k),pr=S.bets[k]*B.o*(rk===k?2:1);pay+=S.bets[k]+pr;}
 if(rk)S.own.ring=0;S.coins=S.coins-tot()+pay;
 let rep=2*S.round;if(S.own.pinky){S.own.pinky=0;if(S.win)rep=S.round;else S.loss++;}
 if(S.coins>=rep){S.coins-=rep;}else{S.coins=0;S.loss++;}
 S.rows=BETS.filter(B=>S.bets[B.k]).map(B=>{const w=S.wins.includes(B.k),pr=S.bets[B.k]*B.o*(rk===B.k?2:1);return `<div class='${w?'w':'l'}'><span>${B.n} (${S.bets[B.k]})</span><span>${w?'WON +'+pr:'LOST −'+S.bets[B.k]}</span></div>`}).join('');S.recap=`<b>${S.msg}</b> Death collects <b>${rep}</b>.${S.loss?' <b>You couldn’t cover it. *snip*</b>':' You can pay!'} You have <b>${S.coins}</b> left.`;if(S.win)sfx.win();else{sfx.lose();document.body.classList.add('shake');setTimeout(()=>document.body.classList.remove('shake'),500);}S.phase='recap';render();}
-function after(){sfx.click();if(S.loss>0){S.phase='lose';S.msg='Choose a finger to sacrifice. Its powerup goes with it.';render();}else next();}
-function next(){S.round++;S.coins+=S.round;S.bets={pass:0,hunt:0,seven:0,eleven:0,snake:0};S.point=null;S.stage='come';S.dice=[0,0];S.comeDice=null;S.phase='bet';sfx.loan();S.msg=`Round ${S.round}. Death loans you ${S.round} coin${S.round>1?'s':''}. Spend them all.`;}
-function render(){let h=`<button class='b alt mute' onclick='toggleMute()'>${muted?'🔇 Sound off':'🔊 Sound on'}</button><button class='b alt help' onclick='sfx.click();S.tut=0;render()'>? How to play</button><h1>OOPS, <span>I DIED!</span></h1><div class="tag">a solo craps roguelike about gambling with Death</div>`;
-if(S.phase==='over'){const rk=RANKS.find(r=>S.round>=r[0])[1];h+=`<div class="over"><div class="big">You are dead (again)</div><p>You reached round <b class="A">${S.round}</b><br>Rank: <b class="A">${rk}</b><br>Best this session: ${best}</p><p><i>Death thanks you for your patronage. He’d shake your hand, but… well.</i></p><button class="b" onclick="sfx.lose();init();render()">Die again</button></div>`+fingers();$('#app').innerHTML=h;return;}
-h+=`<div class="hud"><span>Round <b>${S.round}</b></span><span>Coins <b>${S.coins}</b></span><span>Free <b>${free()}</b></span><span>Repay <b>${S.own.pinky?'1–2×':'2×'} (${2*S.round})</b></span></div>`;
-h+=`<div class="say"><b>DEATH:</b> ${S.phase==='recap'?S.recap:S.msg}</div>`;
-h+=`<div class='tray'><span class='lab'>ROLL ZONE</span><div id='dice' class='dice ${S.go?'go':''} ${S.phase==='rolling'?'tum':''}'>${die(S.dice[0])}${die(S.dice[1])}${pk()}</div></div>`;S.go=0;if(S.phase==='bet')h+=`<div class='hint'>👉 Tap a bet spot below to put a coin on it. <b>${free()}</b> coin${free()===1?'':'s'} left to place.${free()?'':' All placed — hit ROLL!'}${S.round===1?' <b>First time? Tap PASS LINE.</b>':''}</div>`;if(S.phase==='review'){const x=explain(sum(S.dice));h+=`<div class='res ${x[0]}'>${x[1]}<small>${x[2]}</small></div>`;}if(S.phase==='roll')h+=`<div class='hint'>Point is <b>${S.point}</b>. Roll a <b>${S.point}</b> to win — a <b>7</b> loses. Anything else: roll again.</div>`;if(S.phase==='ring'||S.phase==='recap')h+=`<div class='stamp ${S.win?'good':'bad'}'><span class='big'>${S.win?'You win!':'You lose!'}</span></div>`;if(S.phase==='recap')h+=`<div class='rows'>${S.rows||'<div><span>No bets placed</span></div>'}</div>`;
-h+=`<div class="mat">`+BETS.map(B=>{const n=S.bets[B.k],pre=B.k==='snake'?`<div class="cell place">Place your bets</div>`:'';
-return pre+`<div class="cell ${B.c||''}" style="--r:${B.r}deg" onclick="bet('${B.k}',1)">${B.k==='pass'?'<span class="safe">★ safest bet</span>':''}<span class="od">${B.o}:1</span><span class="big">${B.n}</span><small>${B.d}</small>${n?`<span class="chips"><span class="coin">${n}</span>${S.phase==='bet'?`<button onclick="event.stopPropagation();bet('${B.k}',-1)">−</button>`:''}</span>`:''}</div>`;}).join('')+`</div>`;
-h+=fingers()+`<div class="acts">`;
-const t=sum(S.dice);
+function after(){clearAuto();if(S.phase!=='recap')return;if(S.loss>0){S.phase='lose';S.msg='Choose a finger to sacrifice. Its powerup goes with it.';render();}else{next();render();}}
+function next(){S.round++;S.coins+=S.round;S.bets={pass:0,hunt:0,seven:0,eleven:0,snake:0};S.bought={};prevTok={};S.point=null;S.stage='come';S.dice=[0,0];S.comeDice=null;S.loss=0;S.phase='bet';sfx.loan();S.msg=`Round ${S.round}. Death loans you ${S.round} skull${S.round>1?'s':''}. Spend them all.`;}
+function explain(t){if(S.stage==='come'){if(t===7||t===11)return['good',`${t}! A natural!`,'7 or 11 on the first roll = you win the round.'];if([2,3,12].includes(t))return['bad',`${t}… craps!`,'2, 3 or 12 on the first roll = you lose the round.'+(S.own.bird?' You own The Bird — use it!':'')];return['neu',`${t} becomes the POINT`,`Next you keep rolling. Roll a ${t} again to win, but a 7 loses.`];}if(t===S.point)return['good',`${t}! You hit the Point!`,'You win the round.'];if(t===7)return['bad','7… seven out!','Rolling a 7 before your Point loses the round.'];return['neu',`${t}. Nothing happens.`,`Not your Point (${S.point}) and not a 7. Roll again.`];}
+
+/* ---------- layout ---------- */
+function mount(){
+$('#app').innerHTML=`
+<div class="toolbar"><button class="b alt sm" id="mute" onclick="toggleMute()"></button><button class="b alt sm" onclick="sfx.click();S.tut=0;render()">? How to play</button></div>
+<div class="top">
+  <div><div class="logo">${ART.title.svg}</div><div class="tag">a solo craps roguelike about gambling with Death</div><div class="hud" id="hud"></div></div>
+  <div class="death"><div class="portrait">${ART.death.svg}</div><div class="say"><div class="paper" id="say"></div></div></div>
+</div>
+<div class="tray"><span class="lab">Roll zone</span><div id="dice" class="dice"></div></div>
+<div id="notes"></div>
+<div class="stage">
+  <div class="bar"><div class="barframe"><span class="lab">Skulls</span><div class="bar-stack" id="barStack"></div><div class="bar-n" id="barN"></div></div>
+    <button class="reset" id="reset" onclick="resetSpend()" title="Pick up bets and refund fingers bought this round"><i>↺</i>Reset</button></div>
+  <div class="board">${ART.board.svg}<div class="ov" id="bov"></div></div>
+  <div class="handbox">${ART.hand.svg}<div class="ov" id="hov"></div></div>
+</div>
+<div class="leg">Tap bets to drop skulls. Tap a finger to buy its powerup (cost = the circled number). Spend or wager <b>ALL</b> your skulls each round.</div>
+<div class="acts" id="acts"></div>
+<div id="tut"></div>`;
+window.addEventListener('resize',fitBar);
+}
+const pct=(r,v,pad)=>{pad=pad||0;return `left:${(r[0]-v[0]-pad)/v[2]*100}%;top:${(r[1]-v[1]-pad)/v[3]*100}%;width:${(r[2]-r[0]+2*pad)/v[2]*100}%;height:${(r[3]-r[1]+2*pad)/v[3]*100}%`};
+function fitBar(){const st=$('#barStack');if(!st)return;const bd=$('.board'),bar=$('.bar');if(bd&&bar)bar.style.height=Math.max(300,Math.min(bd.offsetHeight,window.innerHeight-118))+'px';const n=st.querySelectorAll('.skull').length,H=st.clientHeight,W=st.clientWidth;const sk=Math.max(34,Math.min(W-2,58));st.style.setProperty('--sk',sk+'px');const step=n>1?Math.min(sk*.62,(H-sk)/(n-1)):0;st.style.setProperty('--step',Math.max(5,step)+'px');}
+function renderBar(){const avail=Math.max(0,free()),show=Math.min(avail,40);let s='';for(let i=0;i<show;i++)s+=`<span class="skull${i>=prevBar?' new':''}" style="--i:${i};--rot:${((i*37)%13)-6}deg;animation-delay:${Math.min(i-prevBar,8)*30}ms">${SKULL}</span>`;prevBar=show;
+$('#barStack').innerHTML=s||'<span class="allin">ALL<br>IN</span>';
+$('#barN').innerHTML=`<b>${avail}</b><small>free</small><small>of ${S.coins}</small>`;
+$('#reset').disabled=!(S.phase==='bet'&&(tot()>0||Object.keys(S.bought||{}).length>0));fitBar();}
+function tokHTML(B,n){const show=Math.min(n,5),pn=prevTok[B.k]||0;let s='';for(let i=0;i<show;i++)s+=`<span class="sk${i>=pn&&n>pn?' new':''}">${SKULL}</span>`;prevTok[B.k]=n;
+return `<span class="tok" style="${B.tp}"><span class="stk">${s}</span><span class="cnt">${n}</span>${S.phase==='bet'?`<button class="minus" onclick="event.stopPropagation();bet('${B.k}',-1)" title="Take one back">−</button>`:''}</span>`;}
+function renderBoard(){const v=ART.board.view;let h='';const hot=S.phase==='bet'&&free()>0;
+for(const B of BETS){const n=S.bets[B.k];if(!n)prevTok[B.k]=0;h+=`<div class="bhit${hot?' hot':''}" style="${pct(ART.board.cells[B.k],v,0)}" onclick="bet('${B.k}',1)" aria-label="${B.n}">${n?tokHTML(B,n):''}</div>`;}
+$('#bov').innerHTML=h;}
+function stOf(f){const k=f.k;if(!S.alive[k])return'dead';if(S.phase==='lose')return'pick';if(S.own[k])return'own';if(S.phase==='bet'&&free()>=f.c)return'can';return'idle';}
+function renderHand(){const v=ART.hand.view;let h='';
+for(const f of FING){const st=stOf(f),m={dead:'✕',own:'✓',can:'+',pick:'✂',idle:''}[st];
+h+=`<div class="fhit ${f.k} ${st}" style="${pct(ART.hand.fingers[f.k],v,3)}" onclick="buy('${f.k}')" title="${f.n} (cost ${f.c}): ${f.d}">${m?`<span class="fst">${m}</span>`:''}</div>`;
+document.querySelectorAll('.handbox .f-'+f.k).forEach(e=>e.setAttribute('data-s',st));}
+$('#hov').innerHTML=h;}
+function renderNotes(){let h='';const t=sum(S.dice);
+if(S.phase==='over'){const r=RANKS.find(r=>S.round>=r[0]);h+=`<div class="over"><div class="tomb">${ART.tomb.svg}<div class="rankmark" style="${pct(ART.tomb.rows[r[2]],ART.tomb.view,0)}"></div></div><div><div class="big">You are dead (again)</div><p>You reached round <b class="A" style="font-size:1.4em">${S.round}</b><br>Rank: <b class="A" style="font-size:1.3em">${r[1]}</b><br>Best this session: ${best}</p><p><i>Death thanks you for your patronage. He’d shake your hand, but… well.</i></p><button class="b" onclick="sfx.lose();init();render()">Die again</button></div></div>`;}
+else{
+if(S.phase==='bet')h+=`<div class='hint'>Tap a bet on the mat to drop a skull. <b>${free()}</b> free skull${free()===1?'':'s'} left.${free()?'':' All in — hit ROLL!'}${S.round===1?' <b>First time? Tap PASS LINE.</b>':''}</div>`;
+if(S.phase==='review'){const x=explain(t);h+=`<div class='res ${x[0]}'>${x[1]}<small>${x[2]}</small></div>`;}
+if(S.phase==='roll')h+=`<div class='hint'>Point is <b>${S.point}</b>. Roll a <b>${S.point}</b> to win — a <b>7</b> loses. Anything else: roll again.</div>`;
+if(S.phase==='ring'||S.phase==='recap')h+=`<div class='stamp ${S.win?'good':'bad'}'><span class='big'>${S.win?'You win!':'You lose!'}</span></div>`;
+if(S.phase==='recap')h+=`<div class='rows'>${S.rows||'<div><span>No bets placed</span></div>'}</div><div class="auto-hint">…Death counts the take…</div>`;
+if(S.phase==='lose')h+=`<div class="hint" style="border-color:var(--hot)">Pick a finger on the hand. Death is waiting.</div>`;}
+$('#notes').innerHTML=h;}
+function renderActs(){let h='';const t=sum(S.dice);
 if(S.phase==='bet')h+=`<button class="b" ${free()?'disabled':''} onclick="roll()">${free()?`Spend ${free()} more`:'Roll the bones'}</button>`;
 if(S.phase==='roll')h+=`<button class="b" onclick="roll()">Roll</button>`;
-if(S.phase==='review'){if(S.own.thumb)h+=`<button class="b alt" onclick="re(2)">Reroll both</button>`;if(S.own.index)h+=`<button class="b alt" onclick="re(0)">Reroll die 1</button><button class="b alt" onclick="re(1)">Reroll die 2</button>`;if(S.own.bird&&S.stage==='come'&&[2,3,12].includes(t))h+=`<button class="b alt" onclick="bird()">The Bird</button>`;h+=`<button class="b" onclick="cont()">Lock it in</button>`;}
-if(S.phase==='ring'){h+=`<div class="say" style="width:100%"><b>RING-A-DING:</b> double the profit of which winning bet?</div>`+S.wins.map(k=>`<button class="b alt" onclick="settle('${k}')">${BETS.find(x=>x.k===k).n}</button>`).join('')+`<button class="b" onclick="settle(null)">Skip</button>`;}
-if(S.phase==='recap')h+=`<button class="b" onclick="after()">Continue</button>`;
-h+=`</div><div class="leg">${FING.map(f=>`<b>${f.n} (${f.c})</b> ${f.d}`).join('<br>')}<br><br>Spend or wager <b>ALL</b> your coins each round. Buy powerups after betting, before rolling. Winning bets return the wager plus profit.</div>`;
-$('#app').innerHTML=h;}
-function fingers(){return `<div class="fing">`+FING.map(f=>{const dead=!S.alive[f.k],own=S.own[f.k],pick=S.phase==='lose'&&!dead,can=S.phase==='bet'&&!dead&&!own&&free()>=f.c;
-return `<button class="${dead?'dead':''} ${own?'own':''} ${pick?'pick':''}" onclick="buy('${f.k}')" title="${f.d}"><span class="num">${f.c}</span>${BONE}<span class="nm">${f.n}</span><span class="st">${dead?'CUT OFF':own?'READY':can?'BUY':pick?'SNIP?':'—'}</span></button>`;}).join('')+`</div>`;}
-function explain(t){if(S.stage==='come'){if(t===7||t===11)return['good',`${t}! A natural!`,'7 or 11 on the first roll = you win the round.'];if([2,3,12].includes(t))return['bad',`${t}… craps!`,'2, 3 or 12 on the first roll = you lose the round.'+(S.own.bird?' You own The Bird — use it!':'')];return['neu',`${t} becomes the POINT`,`Next you keep rolling. Roll a ${t} again to win, but a 7 loses.`];}if(t===S.point)return['good',`${t}! You hit the Point!`,'You win the round.'];if(t===7)return['bad','7… seven out!','Rolling a 7 before your Point loses the round.'];return['neu',`${t}. Nothing happens.`,`Not your Point (${S.point}) and not a 7. Roll again.`];}
-const TUT=[['You’re dead. Oops.',`<p>Death will let you live a bit longer if you beat him at dice. The catch: <b>every time you can’t pay him, he takes a finger.</b></p><p>You have <b>5 fingers</b>. Lose them all and the game is over. Your score is how many <b>rounds</b> you survive.</p>`],['Coins and the debt',`<p>Each round Death <b>lends you coins</b> equal to the round number. Round 1 = 1 coin. Round 4 = 4 coins.</p><p>At the end he wants <b>double</b> back (round 4 = pay 8). So you have to <b>win extra coins</b> by gambling.</p>`],['Two dice, add them',`<p>You roll two dice and add them together. That is your total.</p><div class='ex'>${die(3)}<b>+</b>${die(4)}<b>=</b><b>7</b></div>`],['Step 1: the first roll',`<p>The first roll of every round is called the come-out:</p><div class='ex'><b class='win'>7 or 11 = YOU WIN</b></div><div class='ex'><b class='lose'>2, 3 or 12 = YOU LOSE</b></div><p>Any other total (4, 5, 6, 8, 9, 10) becomes your <b>POINT</b>. Remember that number.</p>`],['Step 2: chase the Point',`<p>Now keep rolling until one of these happens:</p><div class='ex'><b class='win'>Roll your Point again = WIN</b></div><div class='ex'><b class='lose'>Roll a 7 = LOSE</b></div><p>Anything else does nothing, just roll again. Example: your Point is 6. You roll 9, then 4, then 6. You win!</p>`],['Betting',`<p>Before rolling, tap the spots on the mat to put coins down. <b>You must use ALL your coins</b> (bets or powerups) before you can roll.</p><p><b>Pass Line</b> bets that you win the round. It pays 1:1 (bet 1, win 1 extra). It’s the safe one.</p><p>The rest are long shots: <b>Lucky Seven</b> (first roll is 7) pays 4:1, <b>Eleven Heaven</b> (first roll is 11) pays 15:1, <b>Snake Eyes</b> (first roll is 1+1) pays 30:1. <b>Point Hunter</b> (you win by hitting the Point) pays 2:1.</p>`],['Fingers are powerups',`<p>Before rolling you can tap a finger to <b>buy a powerup</b>. Use them after a roll, before you lock it in:</p><p>👍 <b>Thumbs Up</b> (2): reroll both dice<br>☝️ <b>Point Taken</b> (3): reroll one die<br>🖕 <b>The Bird</b> (1): a losing first roll becomes a Point instead<br>💍 <b>Ring-a-Ding</b> (4): double the profit of one winning bet<br>🤙 <b>Pinky Promise</b> (1): repay only 1× if you win, but lose a finger if you lose</p><p>Coins spent on powerups can’t be bet, so don’t overspend early.</p>`],['Paying Death',`<p>After the round, Death takes double the round number. If you can’t pay, he takes <b>all your coins and one finger</b>. You pick which one, and its powerup is gone for good.</p><p>Leftover coins carry over, but you must spend them all next round too.</p>`],['Quick tips',`<p>✔ Round 1: put your 1 coin on <b>PASS LINE</b> and roll.<br>✔ Long shots are fun but rarely hit.<br>✔ Reroll bad results <b>before</b> you tap “Lock it in”.<br>✔ Losing a finger isn’t the end. Losing all five is.</p><p>Ready? Go gamble with Death.</p>`]];
+if(S.phase==='review'){if(S.own.thumb)h+=`<button class="b alt" onclick="re(2)">Reroll both</button>`;if(S.own.index)h+=`<button class="b alt" onclick="re(0)">Reroll die 1</button><button class="b alt" onclick="re(1)">Reroll die 2</button>`;if(S.own.bird&&S.stage==='come'&&[2,3,12].includes(t))h+=`<button class="b alt" onclick="bird()">The Bird</button>`;if(hasReviewChoices())h+=`<button class="b" onclick="cont()">Lock it in</button>`;else h+=`<div class="auto-hint">…locking it in…</div>`;}
+if(S.phase==='ring')h+=`<div class="say2"><b>RING-A-DING:</b> double the profit of which winning bet?</div>`+S.wins.map(k=>`<button class="b alt" onclick="settle('${k}')">${BETS.find(x=>x.k===k).n}</button>`).join('')+`<button class="b" onclick="settle(null)">Skip</button>`;
+$('#acts').innerHTML=h;$('#acts').style.display=h?'flex':'none';}
+function render(){clearAuto();
+$('#mute').textContent=muted?'Sound off':'Sound on';
+$('#hud').innerHTML=`<span>Round<b>${S.round}</b></span><span>Death wants<b>${S.own.pinky?S.round+'–'+2*S.round:2*S.round}</b></span><span>Skulls<b>${S.coins}</b></span>`;
+$('#say').innerHTML=`<span class="who">DEATH:</span>${S.phase==='recap'?S.recap:S.msg}`;
+$('#dice').className='dice'+(S.go?' go':'')+(S.phase==='rolling'?' tum':'');$('#dice').innerHTML=die(S.dice[0])+die(S.dice[1])+pk();S.go=0;
+renderNotes();renderBar();renderBoard();renderHand();renderActs();
+$('#tut').innerHTML=S.tut>=0?tutHTML():'';
+if(S.tut<0){if(S.phase==='recap')scheduleAuto(after,S.win?2400:2000);else if(S.phase==='review'&&!hasReviewChoices())scheduleAuto(()=>{if(S.phase==='review')cont();},1300);}}
+
+/* ---------- tutorial ---------- */
+const TUT=[['You’re dead. Oops.',`<p>Death will let you live a bit longer if you beat him at dice. The catch: <b>every time you can’t pay him, he takes a finger.</b></p><p>You have <b>5 fingers</b>. Lose them all and the game is over. Your score is how many <b>rounds</b> you survive.</p>`],['Skulls and the debt',`<p>Each round Death <b>lends you skulls</b> equal to the round number. Round 1 = 1 skull. Round 4 = 4 skulls.</p><p>At the end he wants <b>double</b> back (round 4 = pay 8). So you have to <b>win extra</b> by gambling.</p>`],['Two dice, add them',`<p>You roll two dice and add them together. That is your total.</p><div class='ex'>${die(3)}<b>+</b>${die(4)}<b>=</b><b>7</b></div>`],['Step 1: the first roll',`<p>The first roll of every round is called the come-out:</p><div class='ex'><b class='win'>7 or 11 = YOU WIN</b></div><div class='ex'><b class='lose'>2, 3 or 12 = YOU LOSE</b></div><p>Any other total (4, 5, 6, 8, 9, 10) becomes your <b>POINT</b>. Remember that number.</p>`],['Step 2: chase the Point',`<p>Now keep rolling until one of these happens:</p><div class='ex'><b class='win'>Roll your Point again = WIN</b></div><div class='ex'><b class='lose'>Roll a 7 = LOSE</b></div><p>Anything else does nothing, just roll again.</p>`],['Betting',`<p>Before rolling, tap the spots on the mat to put skulls down. <b>You must use ALL your skulls</b> (bets or powerups) before you can roll.</p><p><b>Pass Line</b> is the safe 1:1 bet. Long shots pay more and hit less. Made a mistake? Hit <b>RESET</b> beside the skull bar to pick bets back up and refund fingers you bought this round.</p>`],['Fingers are powerups',`<p>Tap a finger on the hand to <b>buy a powerup</b>. Use them after a roll, before you lock it in.</p><p>The circled number is the cost. A white finger is ready to use. A dashed ghost is a finger Death already took.</p>`],['Paying Death',`<p>After the round, Death takes double the round number. If you can’t pay, he takes <b>all your skulls and one finger</b>.</p>`],['Quick tips',`<p>✔ Round 1: put your 1 skull on <b>PASS LINE</b> and roll.<br>✔ Reroll bad results <b>before</b> you lock in.<br>✔ Losing a finger isn’t the end. Losing all five is.</p>`]];
 function tutHTML(){const i=S.tut,t=TUT[i];return `<div class='tut'><div class='tc'><h2>${t[0]}</h2>${t[1]}<div class='dots'>${TUT.map((_,j)=>j===i?'●':'○').join('')}</div><div class='acts'>${i?`<button class='b alt' onclick='sfx.click();S.tut--;render()'>Back</button>`:''}${i<TUT.length-1?`<button class='b' onclick='sfx.click();S.tut++;render()'>Next</button>`:`<button class='b' onclick='sfx.choose();S.tut=-1;seen=1;render()'>Let’s play</button>`}<button class='b alt' onclick='sfx.click();S.tut=-1;seen=1;render()'>Skip</button></div></div></div>`;}
-let _r=render;render=function(){_r();if(S.tut>=0)$('#app').insertAdjacentHTML('beforeend',tutHTML());};
-init();render();
+
+init();mount();render();
 </script></body></html>
