@@ -12,99 +12,138 @@ html,body{margin:0;background:var(--ink);color:var(--paper);font-family:'Patrick
 body{background-color:var(--ink);background-image:
 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cg fill='%23f4f1e8' opacity='.55'%3E%3Cpath d='M30 40h6M33 37v6M31 38l4 4M35 38l-4 4'/%3E%3Cpath d='M180 90h6M183 87v6' /%3E%3Cpath d='M90 190h6M93 187v6M91 188l4 4M95 188l-4 4'/%3E%3Cpath d='M220 220h5M222.500 217.500v5'/%3E%3Ccircle cx='140' cy='30' r='1.4'/%3E%3Ccircle cx='60' cy='120' r='1.2'/%3E%3Ccircle cx='230' cy='160' r='1.5'/%3E%3Ccircle cx='20' cy='220' r='1.2'/%3E%3Ccircle cx='120' cy='240' r='1.3'/%3E%3C/g%3E%3C/svg%3E"),
 radial-gradient(circle,#262626 1.1px,transparent 1.5px);background-size:260px 260px,8px 8px;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
-#app{max-width:1000px;margin:0 auto;padding:10px 10px 0;position:relative}
+#app{max-width:980px;margin:0 auto;padding:8px 10px 0;position:relative}
 .A,.big,.num{font-family:Anton,Impact,'Arial Narrow',sans-serif;text-transform:uppercase;letter-spacing:.02em}
 svg{display:block}
 b{font-weight:400;font-family:Anton,Impact,sans-serif;letter-spacing:.02em}
-.say b,.hint b,.res b,.tc b,.leg b{font-size:.95em}
+.hint b,.res b,.tc b,.goal b,.chip b{font-size:.95em}
 
-/* ---------- toolbar + header ---------- */
-.toolbar{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px}
-button.b{font:1.3rem/1 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.03em;background:var(--paper);color:var(--ink);border:0;padding:10px 20px;cursor:pointer;clip-path:var(--torn);transition:transform .1s,filter .1s}
+/* ---------- buttons ---------- */
+button.b{font:1.25rem/1 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.03em;background:var(--paper);color:var(--ink);border:0;padding:12px 22px;cursor:pointer;clip-path:var(--torn);transition:transform .1s,filter .1s}
 button.b:hover:not(:disabled){transform:rotate(-1.2deg) scale(1.03)}
 button.b:active:not(:disabled){transform:scale(.97)}
 button.b.alt{background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 3px var(--paper)}
-button.b.sm{font-size:.95rem;padding:7px 14px}
+button.b.sm{font-size:.9rem;padding:6px 12px}
 button.b:disabled{opacity:.35;cursor:default}
-.top{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}
-@media(min-width:860px){.top{grid-template-columns:minmax(0,370px) 1fr;gap:18px}}
-.logo{background:#fff;transform:rotate(-1deg);clip-path:var(--torn2);padding:2px 0;max-width:420px;margin:0 auto}
-.logo svg{width:100%;height:auto}
-.tag{font-size:.95rem;color:var(--mut);text-align:center;margin:6px 0 0}
-.hud{display:flex;gap:8px;margin-top:10px}
-.hud span{flex:1;background:var(--ink);box-shadow:inset 0 0 0 3px var(--paper);padding:6px 10px;font:700 .9rem/1.1 Anton,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:var(--mut)}
-.hud span b{display:block;font-size:1.9rem;line-height:1;color:var(--paper)}
+button.b.hot{background:var(--hot);color:#fff}
 
-/* ---------- Death card ---------- */
-.death{display:grid;grid-template-columns:minmax(110px,36%) 1fr;gap:12px;align-items:center}
-.portrait{border:3px solid var(--paper);background:#fff;line-height:0;transform:rotate(.8deg)}
-.portrait svg{width:100%;height:auto}
-.say{position:relative;filter:drop-shadow(0 0 0 #000)}
-.say .paper{background:#fff;color:var(--ink);padding:14px 18px;clip-path:var(--torn);min-height:5.2em;font-size:1.05rem;line-height:1.2}
-.say::before{content:"";position:absolute;left:-13px;top:34px;border:11px solid transparent;border-right:15px solid #fff;border-left:0;z-index:2}
-.say .who{display:block;font:1.15rem/1 Anton,Impact,sans-serif;letter-spacing:.06em;margin-bottom:4px}
+/* ---------- top chrome ---------- */
+.chrome{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.brand{flex:0 0 auto;width:92px;background:#fff;clip-path:var(--torn2);padding:2px;transform:rotate(-1.5deg);line-height:0}
+.brand svg{width:100%;height:auto}
+.chrome .tools{margin-left:auto;display:flex;gap:6px}
+.hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;flex:1;min-width:0}
+.hud .cell{background:var(--ink);box-shadow:inset 0 0 0 2px var(--paper);padding:5px 6px 6px;text-align:center;font:700 .72rem/1 Anton,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.hud .cell b{display:block;font-size:1.55rem;line-height:1.05;color:var(--paper);margin-top:2px}
+.hud .cell.danger{box-shadow:inset 0 0 0 2px var(--hot);color:var(--hot)}
+.hud .cell.danger b{color:var(--hot);animation:pulseDebt .9s ease-in-out infinite}
+.hud .cell.flash b{animation:debtFlash .55s ease}
+@keyframes pulseDebt{50%{opacity:.55}}
+@keyframes debtFlash{0%,100%{transform:none}40%{transform:scale(1.25);color:#fff}}
+.fips{display:flex;justify-content:center;gap:3px;margin-top:4px}
+.fips i{width:10px;height:18px;border-radius:3px 3px 2px 2px;background:var(--paper);display:block;position:relative}
+.fips i.dead{background:#333;box-shadow:inset 0 0 0 1px #555}
+.fips i.dead::after{content:"";position:absolute;inset:7px -2px auto;height:2px;background:var(--hot);transform:rotate(-28deg)}
 
-/* ---------- roll zone ---------- */
-.tray{background:radial-gradient(circle,#1d1d1d 1px,transparent 1.5px) 0 0/7px 7px,#050505;border:4px solid var(--paper);box-shadow:inset 0 0 0 4px var(--ink),inset 0 0 0 6px var(--mut);padding:20px 8px 14px;margin:20px 0 10px;position:relative}
-.lab{position:absolute;top:-14px;left:12px;background:var(--ink);padding:0 8px;font:700 .95rem/1.3 Anton,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase}
-.dice{display:flex;justify-content:center;gap:20px;align-items:center;min-height:92px}
-.dice svg{width:84px;height:84px;filter:drop-shadow(3px 4px 0 #000)}
-.dice.go svg{animation:sh .45s}
+.goal{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;align-items:center;margin:4px 0 10px;padding:8px 12px;border:2px dashed var(--mut);text-align:center;font-size:1rem;line-height:1.2}
+.goal .pill{background:var(--paper);color:var(--ink);padding:2px 10px;font:700 1rem/1.3 Anton,Impact,sans-serif;letter-spacing:.04em}
+
+/* ---------- Death toast ---------- */
+.toast{display:none;align-items:center;gap:10px;margin:0 0 10px;padding:10px 12px;background:#fff;color:var(--ink);clip-path:var(--torn);animation:toastIn .35s cubic-bezier(.2,1.4,.4,1);cursor:pointer}
+.toast.on{display:flex}
+.toast .hint{display:block;margin-top:4px;font-size:.78rem;color:var(--mut);font-family:Anton,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.toast .mini{width:54px;flex:0 0 auto;border:2px solid var(--ink);line-height:0;background:#fff}
+.toast .mini svg{width:100%;height:auto}
+.toast .body{flex:1;min-width:0;font-size:1.02rem;line-height:1.2}
+.toast .who{font:1rem/1 Anton,Impact,sans-serif;letter-spacing:.06em;display:block;margin-bottom:2px}
+@keyframes toastIn{from{transform:translateY(-12px) scale(.96);opacity:0}to{opacity:1}}
+
+/* ---------- hero dice ---------- */
+.hero{position:relative;background:radial-gradient(circle,#1d1d1d 1px,transparent 1.5px) 0 0/7px 7px,#050505;border:4px solid var(--paper);box-shadow:inset 0 0 0 4px var(--ink),inset 0 0 0 6px var(--mut);padding:18px 10px 12px;margin:0 0 10px;transition:padding .25s,opacity .25s,filter .25s,min-height .25s}
+.hero .lab{position:absolute;top:-12px;left:12px;background:var(--ink);padding:0 8px;font:700 .85rem/1.3 Anton,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.dice{display:flex;justify-content:center;align-items:center;gap:14px;min-height:100px}
+.dice .die{width:96px;height:96px;filter:drop-shadow(3px 4px 0 #000);transition:transform .15s}
+.dice .die.clickable{cursor:pointer}
+.dice .die.clickable:hover{transform:translateY(-4px) scale(1.05)}
+.dice .die svg{width:100%;height:100%}
+.dice.go .die{animation:sh .45s}
 @keyframes sh{0%{transform:rotate(-30deg) translateY(-12px)}60%{transform:rotate(18deg)}100%{transform:none}}
-.puck{width:66px;height:66px;border-radius:50%;background:var(--paper);color:var(--ink);display:grid;place-items:center;text-align:center;font:1.6rem/1 Anton,Impact,sans-serif;box-shadow:0 0 0 4px var(--ink),0 0 0 7px var(--paper)}
+.total{min-width:64px;text-align:center}
+.total b{display:block;font-size:3.2rem;line-height:1;animation:slam .35s cubic-bezier(.2,1.6,.4,1)}
+.total small{display:block;font:700 .7rem/1 Anton,Impact,sans-serif;letter-spacing:.1em;color:var(--mut)}
+@keyframes slam{from{transform:scale(2.2);opacity:0}to{transform:none;opacity:1}}
+.puck{width:62px;height:62px;border-radius:50%;background:var(--paper);color:var(--ink);display:grid;place-items:center;text-align:center;font:1.5rem/1 Anton,Impact,sans-serif;box-shadow:0 0 0 4px var(--ink),0 0 0 7px var(--paper)}
 .puck small{display:block;font-size:.55rem;letter-spacing:.08em}
+.powers{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;min-height:0}
+.powers:empty{display:none}
+.chip{display:flex;align-items:center;gap:8px;background:var(--paper);color:var(--ink);border:0;padding:8px 12px;cursor:pointer;clip-path:var(--torn);font:700 .95rem/1.1 Anton,Impact,sans-serif;letter-spacing:.03em;text-transform:uppercase;animation:chipIn .28s cubic-bezier(.2,1.5,.4,1)}
+.chip:hover{transform:rotate(-2deg) scale(1.04)}
+.chip .cost{width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:.85rem}
+.chip small{display:block;font:400 .85rem/1.1 'Patrick Hand',cursive;text-transform:none;letter-spacing:0;color:#444;margin-top:2px}
+.chip.warn{background:var(--hot);color:#fff}
+.chip.warn small{color:#ffd7d4}
+@keyframes chipIn{from{transform:translateY(16px) scale(.7);opacity:0}to{opacity:1}}
 
-/* ---------- notes ---------- */
-.hint{text-align:center;padding:7px 12px;margin:8px 0;border:2px dashed var(--mut)}
-.res{text-align:center;font:1.6rem/1.1 Anton,Impact,sans-serif;text-transform:uppercase;padding:10px 12px 12px;margin:8px 0;animation:st .35s cubic-bezier(.2,1.6,.4,1);clip-path:var(--torn)}
-.res small{display:block;font:1rem 'Patrick Hand',cursive;text-transform:none;letter-spacing:0;margin-top:2px}
+/* ---------- notes / results ---------- */
+.notes{margin:0 0 8px}
+.hint{text-align:center;padding:8px 12px;border:2px dashed var(--mut);line-height:1.25}
+.hint.warn{border-color:var(--hot);color:#ffb4ae}
+.res{text-align:center;font:1.55rem/1.1 Anton,Impact,sans-serif;text-transform:uppercase;padding:10px 12px 12px;animation:st .35s cubic-bezier(.2,1.6,.4,1);clip-path:var(--torn)}
+.res small{display:block;font:1rem 'Patrick Hand',cursive;text-transform:none;letter-spacing:0;margin-top:3px}
 .res.good{background:var(--paper);color:var(--ink)}
 .res.bad{background:var(--hot);color:#fff}
 .res.neu{box-shadow:inset 0 0 0 3px var(--paper)}
-.stamp{text-align:center;margin:12px 0;animation:st .5s cubic-bezier(.2,1.6,.4,1)}
-.stamp .big{font-size:3.4rem;line-height:1;display:inline-block;padding:2px 18px;border:6px solid;transform:rotate(-6deg)}
+.stamp{text-align:center;margin:6px 0 10px;animation:st .5s cubic-bezier(.2,1.6,.4,1)}
+.stamp .big{font-size:3.2rem;line-height:1;display:inline-block;padding:2px 18px;border:6px solid;transform:rotate(-6deg)}
 .stamp.good .big{color:var(--paper)}
 .stamp.bad .big{color:var(--hot)}
 @keyframes st{from{transform:scale(2.6);opacity:0}to{transform:none;opacity:1}}
-.rows{margin:8px 0;background:var(--ink);box-shadow:0 0 0 3px var(--paper)}
-.rows div{display:flex;justify-content:space-between;padding:5px 12px;border-top:1px solid var(--mut)}
-.rows div:first-child{border-top:0}
-.rows .w{background:var(--paper);color:var(--ink)}
-.rows .l{color:var(--mut);text-decoration:line-through}
-.auto-hint{text-align:center;color:var(--mut);font-size:.95rem;margin:4px 0;animation:fadePulse 1.2s ease-in-out infinite}
+.tally{margin:8px 0;background:var(--ink);box-shadow:0 0 0 3px var(--paper);overflow:hidden}
+.tally .row{display:flex;justify-content:space-between;padding:6px 12px;border-top:1px solid #333;opacity:0;transform:translateX(-12px)}
+.tally .row:first-child{border-top:0}
+.tally .row.show{opacity:1;transform:none;transition:opacity .25s,transform .25s}
+.tally .row.w{background:var(--paper);color:var(--ink)}
+.tally .row.l{color:var(--mut);text-decoration:line-through}
+.tally .row.debt{background:var(--hot);color:#fff;font:700 1.05rem/1.2 Anton,Impact,sans-serif;text-transform:uppercase}
+.tally .row.bank{font:700 1.1rem/1.2 Anton,Impact,sans-serif;text-transform:uppercase}
+.auto-hint{text-align:center;color:var(--mut);font-size:.95rem;margin:6px 0;animation:fadePulse 1.2s ease-in-out infinite}
 @keyframes fadePulse{50%{opacity:.4}}
 
-/* ---------- stage: skull bar | board | hand ---------- */
-.stage{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;margin:16px 0 10px;align-items:start}
+/* ---------- stage ---------- */
+.stage{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;margin:8px 0 10px;align-items:start;transition:opacity .25s,filter .25s}
 .stage .handbox{grid-column:1/-1;max-width:420px;width:100%;justify-self:center}
 @media(min-width:860px){.stage{grid-template-columns:84px minmax(0,1fr) minmax(0,1fr);gap:14px}.stage .handbox{grid-column:auto;max-width:none}}
 .bar{position:sticky;top:8px;align-self:start;display:flex;flex-direction:column;align-items:center;gap:6px;height:520px}
-.barframe{position:relative;flex:1;width:100%;border:3px solid var(--paper);background:radial-gradient(circle,#1d1d1d 1px,transparent 1.5px) 0 0/6px 6px,#050505;box-shadow:inset 0 0 0 3px var(--ink),inset 0 0 0 4px #444;display:flex;flex-direction:column;align-items:center;padding:16px 0 6px;min-height:230px}
-.barframe .lab{left:50%;transform:translateX(-50%);font-size:.8rem;top:-12px;padding:0 6px}
-.bar-stack{position:relative;flex:1;width:100%;min-height:150px}
+.barframe{position:relative;flex:1;width:100%;border:3px solid var(--paper);background:radial-gradient(circle,#1d1d1d 1px,transparent 1.5px) 0 0/6px 6px,#050505;box-shadow:inset 0 0 0 3px var(--ink),inset 0 0 0 4px #444;display:flex;flex-direction:column;align-items:center;padding:16px 0 6px;min-height:200px}
+.barframe .lab{left:50%;transform:translateX(-50%);font-size:.75rem;top:-11px;padding:0 6px;position:absolute;background:var(--ink);font:700 .75rem/1.3 Anton,Impact,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.bar-stack{position:relative;flex:1;width:100%;min-height:120px}
 .skull{position:absolute;left:50%;top:calc(var(--i) * var(--step,24px));width:var(--sk,48px);height:var(--sk,48px);margin-left:calc(var(--sk,48px) / -2);transform:rotate(var(--rot));z-index:calc(var(--i) + 1);filter:drop-shadow(0 -2px 0 #000)}
 .skull svg{width:100%;height:100%}
 .skull.new{animation:drop .32s cubic-bezier(.2,1.5,.4,1) both}
 @keyframes drop{from{transform:translateY(-34px) rotate(var(--rot)) scale(.6);opacity:0}to{opacity:1}}
 .allin{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font:700 .9rem/1.05 Anton,Impact,sans-serif;color:var(--mut);letter-spacing:.06em}
 .bar-n{text-align:center;line-height:1;padding-top:4px;border-top:1px dashed #444;width:84%}
-.bar-n b{display:block;font-size:2.2rem}
-.bar-n small{display:block;font:700 .72rem/1.1 Anton,Impact,sans-serif;letter-spacing:.08em;color:var(--mut);text-transform:uppercase}
+.bar-n b{display:block;font-size:2rem}
+.bar-n small{display:block;font:700 .7rem/1.1 Anton,Impact,sans-serif;letter-spacing:.08em;color:var(--mut);text-transform:uppercase}
 .reset{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;background:var(--paper);color:var(--ink);border:0;padding:6px 2px 7px;font:700 .85rem/1 Anton,Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;clip-path:var(--torn);transition:transform .12s}
 .reset i{font:normal 1.5rem/1 Anton,Impact,sans-serif;display:block}
 .reset:hover:not(:disabled){transform:rotate(-3deg) scale(1.05)}
 .reset:disabled{opacity:.3;cursor:default}
 
-.board,.handbox{position:relative;border:3px solid var(--paper);background:#fff;line-height:0;container-type:inline-size}
+.board,.handbox{position:relative;border:3px solid var(--paper);background:#fff;line-height:0;container-type:inline-size;transition:opacity .25s,filter .25s,transform .25s}
 .board svg,.handbox>svg{width:100%;height:auto}
 .ov{position:absolute;inset:0;pointer-events:none;line-height:1}
 .bhit,.fhit{position:absolute;pointer-events:auto;cursor:default;-webkit-tap-highlight-color:transparent}
 .bhit.hot{cursor:pointer;outline:2px dashed var(--hot);outline-offset:-4px;animation:hotp 1.4s ease-in-out infinite}
+.bhit.hot.guide{outline-width:3px;animation:guide 1s ease-in-out infinite}
 @keyframes hotp{50%{outline-color:rgba(211,36,28,.15)}}
+@keyframes guide{50%{outline-color:rgba(211,36,28,.2);background:rgba(211,36,28,.08)}}
 .bhit.hot:hover{background:rgba(211,36,28,.12)}
+.tip{position:absolute;left:50%;bottom:100%;transform:translate(-50%,-6px);background:var(--ink);color:var(--paper);padding:4px 8px;font:700 .72rem/1.2 Anton,Impact,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:3;box-shadow:0 0 0 2px #fff}
+.bhit.hot:hover .tip,.bhit:focus-within .tip{opacity:1}
 .tok{position:absolute;display:flex;align-items:center;gap:5px;background:var(--ink);padding:3px 6px 3px 8px;border-radius:999px;box-shadow:0 0 0 2px #fff,0 4px 0 2px rgba(0,0,0,.45)}
 .tok .stk{display:flex;align-items:center}
-.tok .sk{width:30px;width:clamp(22px,8.5cqw,36px);height:30px;height:clamp(22px,8.5cqw,36px);margin-left:-11px;margin-left:calc(clamp(22px,8.5cqw,36px) * -.34)}
+.tok .sk{width:clamp(22px,8.5cqw,36px);height:clamp(22px,8.5cqw,36px);margin-left:calc(clamp(22px,8.5cqw,36px) * -.34)}
 .tok .sk:first-child{margin-left:0}
 .tok .sk svg{width:100%;height:100%}
 .tok .sk.new{animation:pop .3s cubic-bezier(.2,1.6,.4,1) both}
@@ -113,7 +152,6 @@ button.b:disabled{opacity:.35;cursor:default}
 .tok .minus{pointer-events:auto;width:22px;height:22px;border-radius:50%;border:2px solid var(--paper);background:var(--ink);color:var(--paper);font:1rem/1 Anton,Impact,sans-serif;padding:0;cursor:pointer}
 .tok .minus:hover{background:var(--hot);border-color:var(--hot)}
 
-/* hand finger states (svg elements are tagged .fb body / .fk bones / .f-<name>) */
 .fb,.fk{transition:fill .25s,stroke .25s}
 .fb[data-s=own]{fill:#fff;stroke:#0a0a0a;stroke-width:3.5}
 .fk[data-s=own]{fill:#0a0a0a}
@@ -127,7 +165,7 @@ button.b:disabled{opacity:.35;cursor:default}
 .fhit.own,.fhit.dead,.fhit.idle{cursor:default}
 .fhit.can,.fhit.pick{cursor:pointer}
 .fhit:hover.can,.fhit:hover.pick{background:rgba(255,255,255,.08)}
-.fst{position:absolute;display:grid;place-items:center;width:26px;height:26px;width:clamp(18px,7cqw,28px);height:clamp(18px,7cqw,28px);border-radius:50%;background:var(--paper);color:var(--ink);font:700 1.25rem/1 Anton,Impact,sans-serif;box-shadow:0 0 0 2px var(--ink)}
+.fst{position:absolute;display:grid;place-items:center;width:clamp(18px,7cqw,28px);height:clamp(18px,7cqw,28px);border-radius:50%;background:var(--paper);color:var(--ink);font:700 1.25rem/1 Anton,Impact,sans-serif;box-shadow:0 0 0 2px var(--ink)}
 .fhit.thumb .fst{left:50%;top:5%;transform:translateX(-50%)}
 .fhit:not(.thumb) .fst{left:4%;top:50%;transform:translateY(-50%)}
 .fhit.can .fst{animation:bob .9s ease-in-out infinite}
@@ -137,21 +175,37 @@ button.b:disabled{opacity:.35;cursor:default}
 @keyframes bob{50%{box-shadow:0 0 0 2px var(--ink),0 0 0 6px rgba(244,241,232,.55)}}
 
 /* ---------- action bar ---------- */
-.acts{position:sticky;bottom:0;z-index:6;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;padding:22px 8px calc(10px + env(safe-area-inset-bottom,0px));margin:0 -10px;background:linear-gradient(to bottom,rgba(10,10,10,0),rgba(10,10,10,.94) 34%,#0a0a0a);min-height:84px}
+.acts{position:sticky;bottom:0;z-index:6;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;padding:20px 8px calc(10px + env(safe-area-inset-bottom,0px));margin:0 -10px;background:linear-gradient(to bottom,rgba(10,10,10,0),rgba(10,10,10,.94) 34%,#0a0a0a);min-height:80px}
 .acts .say2{width:100%;text-align:center}
-.leg{font-size:.9rem;color:var(--mut);text-align:center;padding:4px 0 0}
 
 /* ---------- game over ---------- */
-.over{display:grid;grid-template-columns:minmax(150px,240px) 1fr;gap:16px;align-items:center;margin:14px 0;padding:14px;background:var(--ink);box-shadow:0 0 0 4px var(--paper);}
+.over{display:grid;grid-template-columns:minmax(150px,240px) 1fr;gap:16px;align-items:center;margin:10px 0;padding:14px;background:var(--ink);box-shadow:0 0 0 4px var(--paper)}
 @media(max-width:560px){.over{grid-template-columns:1fr;justify-items:center;text-align:center}.over .tomb{max-width:240px}}
 .tomb{position:relative;line-height:0;background:#fff;transform:rotate(-1.5deg)}
 .tomb svg{width:100%;height:auto}
 .rankmark{position:absolute;pointer-events:none;border:3px dashed var(--hot);background:rgba(211,36,28,.14);animation:hotp 1s ease-in-out infinite}
 .rankmark::after{content:"YOU";position:absolute;right:-6px;top:50%;transform:translate(100%,-50%) rotate(4deg);background:var(--hot);color:#fff;font:700 .8rem/1 Anton,Impact,sans-serif;padding:3px 6px;letter-spacing:.06em}
-.over .big{font-size:2.6rem;line-height:1;margin:0 0 8px}
+.over .big{font-size:2.4rem;line-height:1;margin:0 0 8px}
 .over p{margin:6px 0}
+.over .deathbig{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;margin-bottom:10px}
+.over .deathbig .portrait{border:3px solid var(--paper);background:#fff;line-height:0}
+.over .deathbig .portrait svg{width:100%;height:auto}
 
-/* ---------- tutorial ---------- */
+/* ---------- phase focus ---------- */
+#app[data-phase=bet] .hero{padding:10px 8px 8px}
+#app[data-phase=bet] .hero .dice{min-height:56px;opacity:.45;filter:grayscale(.4)}
+#app[data-phase=bet] .hero .die{width:56px;height:56px}
+#app[data-phase=bet] .hero .total,#app[data-phase=bet] .hero .puck{display:none}
+#app[data-phase=roll] .stage,#app[data-phase=rolling] .stage,#app[data-phase=review] .stage,#app[data-phase=ring] .stage,#app[data-phase=recap] .stage{opacity:.22;filter:grayscale(.55) brightness(.7);pointer-events:none;transform:scale(.985)}
+#app[data-phase=roll] .hero,#app[data-phase=rolling] .hero,#app[data-phase=review] .hero{box-shadow:inset 0 0 0 4px var(--ink),inset 0 0 0 6px var(--paper),0 0 0 3px var(--paper);transform:scale(1.01)}
+#app[data-phase=review] .powers{margin-top:12px}
+#app[data-phase=lose] .board,#app[data-phase=lose] .bar,#app[data-phase=lose] .hero{opacity:.35;filter:grayscale(.5);pointer-events:none}
+#app[data-phase=lose] .handbox{transform:scale(1.02);box-shadow:0 0 0 4px var(--hot)}
+#app[data-phase=over] .hero,#app[data-phase=over] .stage,#app[data-phase=over] .goal,#app[data-phase=over] .toast{display:none}
+#app[data-phase=recap] .hero{opacity:.55}
+#app[data-phase=ring] .hero{opacity:.7}
+
+/* ---------- tutorial / help ---------- */
 .tut{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:20;display:flex;align-items:center;justify-content:center;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom))}
 .tc{max-width:480px;width:100%;max-height:100%;overflow:auto;border:4px solid var(--paper);padding:16px;background:var(--ink)}
 .tc h2{font:2rem/1 Anton,Impact,sans-serif;text-transform:uppercase;margin:0 0 8px}
@@ -163,20 +217,22 @@ button.b:disabled{opacity:.35;cursor:default}
 .tc .lose{background:var(--hot);color:#fff;padding:2px 8px}
 .tc .acts{position:static;background:none;padding:6px 0 0;margin:0;min-height:0}
 .dots{text-align:center;margin:10px 0;letter-spacing:6px}
+.help-extra{margin-top:12px;border-top:1px dashed #444;padding-top:10px;font-size:.95rem;color:var(--mut)}
 body.shake #app{animation:shk .45s}
 @keyframes shk{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@media(max-width:520px){.hud .cell b{font-size:1.25rem}.brand{width:72px}.total b{font-size:2.4rem}.dice .die{width:78px;height:78px}}
 </style></head>
 <body><div id="app"></div>
 <script src="art/art.js"></script>
 <script>
 if(!window.ART){document.body.innerHTML='<p style="padding:24px;font:20px sans-serif">Missing <b>art/art.js</b> — keep the <b>art</b> folder next to this file.</p>';throw new Error('art.js missing');}
 const $=s=>document.querySelector(s),rd=()=>1+Math.floor(Math.random()*6),sum=d=>d[0]+d[1];
-const FING=[{k:'thumb',n:'Thumbs Up',c:2,d:'Reroll both dice once.'},{k:'index',n:'Point Taken',c:3,d:'Reroll one die once.'},{k:'bird',n:'The Bird',c:1,d:'A losing Come-Out roll sets a Point instead.'},{k:'ring',n:'Ring-a-Ding',c:4,d:'Double the profit of one winning bet.'},{k:'pinky',n:'Pinky Promise',c:1,d:'If craps wins, repay 1× instead of 2×. If craps loses, lose a finger.'}];
-const BETS=[{k:'pass',n:'Pass Line',o:1,tp:'right:3%;bottom:6%'},{k:'hunt',n:'Point Hunter',o:2,tp:'right:4%;bottom:5%'},{k:'seven',n:'Lucky Seven',o:4,tp:'left:5%;bottom:5%'},{k:'eleven',n:'Eleven Heaven',o:15,tp:'right:3%;bottom:8%'},{k:'snake',n:'Snake Eyes',o:30,tp:'left:4%;bottom:6%'}];
+const FING=[{k:'thumb',n:'Thumbs Up',c:2,d:'Reroll both dice once.'},{k:'index',n:'Point Taken',c:3,d:'Reroll one die once.'},{k:'bird',n:'The Bird',c:1,d:'A losing Come-Out sets a Point instead.'},{k:'ring',n:'Ring-a-Ding',c:4,d:'Double the profit of one winning bet.'},{k:'pinky',n:'Pinky Promise',c:1,d:'On a win, repay 1×. On a loss, lose a finger.'}];
+const BETS=[{k:'pass',n:'Pass Line',o:1,how:'Wins if you win the round',tp:'right:3%;bottom:6%'},{k:'hunt',n:'Point Hunter',o:2,how:'Wins only if you hit the Point',tp:'right:4%;bottom:5%'},{k:'seven',n:'Lucky Seven',o:4,how:'Wins if come-out is 7',tp:'left:5%;bottom:5%'},{k:'eleven',n:'Eleven Heaven',o:15,how:'Wins if come-out is 11',tp:'right:3%;bottom:8%'},{k:'snake',n:'Snake Eyes',o:30,how:'Wins if come-out is 1+1',tp:'left:4%;bottom:6%'}];
 const RANKS=[[15,'Undying','undying'],[12,'Death’s Headache','pita'],[9,'Grave Dodger','grave'],[6,'Dead Meat','meat'],[1,'Worm Food','worm']];
 const SKULL=`<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="#fff" stroke="#0a0a0a" stroke-width="1.7" stroke-linejoin="round"><g transform="rotate(29 32 49.5)"><path d="M9.5 47.6 31 47 54.6 47.9 54.4 51.8 31.5 52.3 9.6 51.6Z"/><circle cx="8.6" cy="46.9" r="3.5"/><circle cx="8.9" cy="52.4" r="3.5"/><circle cx="55.6" cy="47" r="3.5"/><circle cx="55.3" cy="52.6" r="3.5"/></g><g transform="rotate(-29 32 49.5)"><path d="M9.5 47.7 32 47.2 54.5 47.6 54.6 51.7 32 52.4 9.4 51.9Z"/><circle cx="8.7" cy="47.2" r="3.5"/><circle cx="8.6" cy="52.2" r="3.5"/><circle cx="55.4" cy="46.9" r="3.5"/><circle cx="55.6" cy="52.3" r="3.5"/></g><path d="M32 3C20.6 2.8 13.2 10.6 13.8 21.2 14 26.2 16.4 29.6 19 31.6L19.6 38.2 22.4 40.4 23.2 45.6 28.4 46.4 29.4 44.4 35 44.4 36 46.4 41 45.6 41.8 40.4 44.6 38.2 45.2 31.6C47.8 29.6 50.2 26.2 50.4 21.2 51 10.6 43.6 2.8 32 3Z"/></g><g fill="#0a0a0a"><path d="M17.4 19.2C17.2 14.8 21.2 13.2 25.2 14.6 28.8 16 29.4 20.8 27.8 24.2 26.2 27.2 20.4 27.4 18.6 24.4 17.8 22.8 17.5 21 17.4 19.2Z"/><path d="M46.6 19.2C46.8 14.8 42.8 13.2 38.8 14.6 35.2 16 34.6 20.8 36.2 24.2 37.8 27.2 43.6 27.4 45.4 24.4 46.2 22.8 46.5 21 46.6 19.2Z"/><path d="M30 29.4 34 29.4 35.4 36.4 32.8 34.8 32 36.8 31.2 34.8 28.6 36.4Z"/></g><g fill="none" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23.4 38.8H40.6M23.4 42.4H40.6M27.2 38.8V45.2M32 38.8V44.4M36.8 38.8V45.2"/><path d="M42 4.6 39.4 10 41.4 13.4 39.2 17.4"/><path d="M44.4 25.4 47.4 22.6M44.8 28.2 48 25.4" stroke-width=".9"/></g></svg>`;
 
-let S,best=0,seen=0,muted=0,AC=null,music=null,autoT=null,prevBar=0,prevTok={};
+let S,best=0,seen=0,muted=0,AC=null,music=null,autoT=null,tallyT=null,toastT=null,prevBar=0,prevTok={},toastMsg='',toastUntil=0,debtFlash=0,helpMode=0;
 
 /* ---------- audio ---------- */
 function unlockAudio(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();music=new Audio('Song1.mp3');music.loop=true;music.volume=.28;}if(AC.state==='suspended')AC.resume();if(!muted&&music.paused)music.play().catch(()=>{});}
@@ -195,18 +251,24 @@ const sfx={
   lose(){beep(220,.15,'sawtooth',.1,0.45);noise(.2,.1,300);},
   snip(){noise(.06,.18,2500);beep(140,.2,'square',.09,0.3);},
   loan(){beep(400,.08,'triangle',.07);beep(600,.1,'triangle',.08);},
-  choose(){beep(600,.05,'square',.06);beep(900,.08,'triangle',.05);}
+  choose(){beep(600,.05,'square',.06);beep(900,.08,'triangle',.05);},
+  tally(){beep(480,.05,'triangle',.05);},
+  debt(){beep(180,.12,'sawtooth',.08,0.5);noise(.1,.08,400);}
 };
 document.addEventListener('pointerdown',unlockAudio,{once:true});
 document.addEventListener('keydown',unlockAudio,{once:true});
 
 /* ---------- state + rules ---------- */
-function init(){S={tut:seen?-1:0,rows:'',round:1,coins:1,bets:{pass:0,hunt:0,seven:0,eleven:0,snake:0},alive:{thumb:1,index:1,bird:1,ring:1,pinky:1},own:{},bought:{},phase:'bet',stage:'come',point:null,dice:[0,0],comeDice:null,loss:0,go:0,wins:[],win:false,hit:false,recap:'',msg:'Oops. You died. That’s not good… Place your bets, friend.'};prevBar=0;prevTok={};}
+function debt(){return S.own.pinky?S.round:2*S.round;}
+function debtLabel(){return S.own.pinky?`${S.round}–${2*S.round}`:String(2*S.round);}
+function speak(msg,ms){if(toastT){clearTimeout(toastT);toastT=null;}toastMsg=msg;const read=Math.max(ms||0,3200+String(msg).length*60);toastUntil=Date.now()+read;scheduleToastClear();}
+function init(){S={tut:seen?-1:0,rows:[],round:1,coins:1,bets:{pass:0,hunt:0,seven:0,eleven:0,snake:0},alive:{thumb:1,index:1,bird:1,ring:1,pinky:1},own:{},bought:{},mercy:1,spared:0,phase:'bet',stage:'come',point:null,dice:[0,0],comeDice:null,loss:0,go:0,wins:[],win:false,hit:false,recap:'',repay:0,msg:'',tallyStep:0};prevBar=0;prevTok={};speak('Oops. You’re dead. Bet your skulls before Death collects.',5200);}
 const tot=()=>Object.values(S.bets).reduce((a,b)=>a+b,0),free=()=>S.coins-tot();
 function hasReviewChoices(){const t=sum(S.dice);return !!(S.own.thumb||S.own.index||(S.own.bird&&S.stage==='come'&&[2,3,12].includes(t)));}
 function clearAuto(){if(autoT){clearTimeout(autoT);autoT=null;}}
+function clearTally(){if(tallyT){clearTimeout(tallyT);tallyT=null;}}
 function scheduleAuto(fn,ms){clearAuto();autoT=setTimeout(()=>{autoT=null;fn();},ms);}
-/* dice with X pips like the cover art */
+function scheduleToastClear(){if(toastT){clearTimeout(toastT);toastT=null;}if(!toastMsg)return;const left=Math.max(50,toastUntil-Date.now());toastT=setTimeout(()=>{toastT=null;if(Date.now()>=toastUntil){toastMsg='';renderToast();}},left);}
 function die(v,r){const P={0:[],1:[[2,2]],2:[[1,1],[3,3]],3:[[1,1],[2,2],[3,3]],4:[[1,1],[3,1],[1,3],[3,3]],5:[[1,1],[3,1],[2,2],[1,3],[3,3]],6:[[1,1],[3,1],[1,2],[3,2],[1,3],[3,3]]}[v];
 const s=v===1?10:6.2;
 const x=P.map(([a,b])=>`<path d="M${a*20-s} ${b*20-s}L${a*20+s} ${b*20+s}M${a*20+s} ${b*20-s}L${a*20-s} ${b*20+s}"/>`).join('');
@@ -214,59 +276,74 @@ return `<svg viewBox="0 0 80 80"${r!=null?` style="transform:rotate(${r}deg) tra
 function bet(k,n){if(S.phase!=='bet')return;if(n>0&&free()<1)return;if(n<0&&S.bets[k]<1)return;S.bets[k]+=n;n>0?sfx.coin():sfx.uncoin();render();}
 function resetSpend(){if(S.phase!=='bet')return;const bought=S.bought||{};const hasBought=Object.keys(bought).length>0;if(tot()===0&&!hasBought)return;
 for(const k of Object.keys(bought)){S.coins+=bought[k];S.own[k]=0;}S.bought={};S.bets={pass:0,hunt:0,seven:0,eleven:0,snake:0};prevTok={};sfx.reset();render();}
-function buy(k){const f=FING.find(x=>x.k===k);if(S.phase==='lose'){if(!S.alive[k])return;S.alive[k]=0;S.own[k]=0;S.loss--;sfx.snip();S.recap+=` You give up your ${f.n.toLowerCase()} finger.`;if(!Object.values(S.alive).some(x=>x)){S.phase='over';best=Math.max(best,S.round);}else if(S.loss<=0)next();render();return;}
-if(S.phase!=='bet'||!S.alive[k]||S.own[k]||free()<f.c)return;S.coins-=f.c;S.own[k]=1;S.bought[k]=f.c;sfx.buy();render();}
-function tumble(keep,nd){S.phase='rolling';S.msg='Rolling… come on, come on…';sfx.dice();render();let n=0;const iv=setInterval(()=>{n++;sfx.dice();const e=$('#dice');if(e)e.innerHTML=[0,1].map(i=>i===keep?die(S.dice[i],0):die(rd(),Math.floor(Math.random()*90-45))).join('')+pk();if(n>=11){clearInterval(iv);S.dice=nd;S.go=1;S.phase='review';sfx.land();S.msg=S.stage==='come'?'Come-out roll. Reroll, or lock it in.':`Point is ${S.point}. Reroll, or lock it in.`;render();}},90);}
+function buy(k){const f=FING.find(x=>x.k===k);if(S.phase==='lose'){if(!S.alive[k])return;S.alive[k]=0;S.own[k]=0;delete S.bought[k];S.loss--;sfx.snip();speak(`Death takes your ${f.n}. Its power is gone for good.`,5200);if(!Object.values(S.alive).some(x=>x)){S.phase='over';best=Math.max(best,S.round);}else if(S.loss<=0)next();render();return;}
+if(S.phase!=='bet'||!S.alive[k]||S.own[k]||free()<f.c)return;S.coins-=f.c;S.own[k]=1;S.bought[k]=f.c;sfx.buy();speak(`Bought ${f.n}. ${f.d}`,4200);render();}
+function tumble(keep,nd){S.phase='rolling';clearAuto();sfx.dice();render();let n=0;const iv=setInterval(()=>{n++;sfx.dice();const e=$('#dice');if(e)e.innerHTML=diceHTML(true,keep);if(n>=11){clearInterval(iv);S.dice=nd;S.go=1;S.phase='review';sfx.land();render();if(!hasReviewChoices())scheduleAuto(()=>{if(S.phase==='review')cont();},1100);}},90);}
 function roll(){sfx.click();tumble(-1,[rd(),rd()]);}
-function pk(){return S.point?`<div class='puck'><div>${S.point}<small>POINT</small></div></div>`:'';}
 function re(i){let nd;if(i===2){if(!S.own.thumb)return;S.own.thumb=0;nd=[rd(),rd()];}else{if(!S.own.index)return;S.own.index=0;nd=[...S.dice];nd[i]=rd();}sfx.choose();tumble(i===2?-1:1-i,nd);}
-function bird(){S.comeDice=[...S.dice];S.point=sum(S.dice);S.own.bird=0;S.stage='point';S.phase='roll';sfx.choose();S.msg=`The Bird! ${S.point} is your Point instead. Death is… amused.`;render();}
+function bird(){S.comeDice=[...S.dice];S.point=sum(S.dice);S.own.bird=0;S.stage='point';S.phase='roll';sfx.choose();speak(`The Bird! ${S.point} is your Point instead. Death is amused.`,5200);render();}
 function cont(){clearAuto();if(S.phase!=='review')return;sfx.click();const t=sum(S.dice);
-if(S.stage==='come'){S.comeDice=[...S.dice];if(t===7||t===11)return fin(1,0,`A natural ${t}!`);if([2,3,12].includes(t))return fin(0,0,`Craps. ${t}. Ouch.`);S.point=t;S.stage='point';S.phase='roll';S.msg=`Point is ${t}. Roll it again before a 7.`;}
-else{if(t===S.point)return fin(1,1,`You hit the Point (${t})!`);if(t===7)return fin(0,0,'Seven out. Death smiles.');S.phase='roll';S.msg=`${t}. Nothing happens. Roll again.`;}render();}
+if(S.stage==='come'){S.comeDice=[...S.dice];if(t===7||t===11)return fin(1,0,`A natural ${t}!`);if([2,3,12].includes(t))return fin(0,0,`Craps. ${t}. Ouch.`);S.point=t;S.stage='point';S.phase='roll';speak(`Point is ${t}. Hit ${t} before a 7 — a 7 now would seven-out.`,5200);}
+else{if(t===S.point)return fin(1,1,`You hit the Point (${t})!`);if(t===7)return fin(0,0,'Seven out. Death smiles.');S.phase='roll';speak(`${t} — nothing. Need ${S.point} to win. Roll again.`,4200);}render();}
 function fin(win,hit,m){S.win=win;S.hit=hit;S.msg=m;const c=sum(S.comeDice),b=S.bets,w=[];
 if(b.pass&&win)w.push('pass');if(b.hunt&&hit)w.push('hunt');if(b.seven&&c===7)w.push('seven');if(b.eleven&&c===11)w.push('eleven');if(b.snake&&S.comeDice[0]===1&&S.comeDice[1]===1)w.push('snake');
 S.wins=w;if(S.own.ring&&w.length){sfx.choose();S.phase='ring';render();}else settle(null);}
 function settle(rk){if(rk!==undefined&&S.phase==='ring')sfx.choose();let pay=0;for(const k of S.wins){const B=BETS.find(x=>x.k===k),pr=S.bets[k]*B.o*(rk===k?2:1);pay+=S.bets[k]+pr;}
-if(rk)S.own.ring=0;S.coins=S.coins-tot()+pay;
+if(rk)S.own.ring=0;S.coins=S.coins-tot()+pay;S.spared=0;
 let rep=2*S.round;if(S.own.pinky){S.own.pinky=0;if(S.win)rep=S.round;else S.loss++;}
-if(S.coins>=rep){S.coins-=rep;}else{S.coins=0;S.loss++;}
-S.rows=BETS.filter(B=>S.bets[B.k]).map(B=>{const w=S.wins.includes(B.k),pr=S.bets[B.k]*B.o*(rk===B.k?2:1);return `<div class='${w?'w':'l'}'><span>${B.n} (${S.bets[B.k]})</span><span>${w?'WON +'+pr:'LOST −'+S.bets[B.k]}</span></div>`}).join('');S.recap=`<b>${S.msg}</b> Death collects <b>${rep}</b>.${S.loss?' <b>You couldn’t cover it. *snip*</b>':' You can pay!'} You have <b>${S.coins}</b> left.`;if(S.win)sfx.win();else{sfx.lose();document.body.classList.add('shake');setTimeout(()=>document.body.classList.remove('shake'),500);}S.phase='recap';render();}
-function after(){clearAuto();if(S.phase!=='recap')return;if(S.loss>0){S.phase='lose';S.msg='Choose a finger to sacrifice. Its powerup goes with it.';render();}else{next();render();}}
-function next(){S.round++;S.coins+=S.round;S.bets={pass:0,hunt:0,seven:0,eleven:0,snake:0};S.bought={};prevTok={};S.point=null;S.stage='come';S.dice=[0,0];S.comeDice=null;S.loss=0;S.phase='bet';sfx.loan();S.msg=`Round ${S.round}. Death loans you ${S.round} skull${S.round>1?'s':''}. Spend them all.`;}
-function explain(t){if(S.stage==='come'){if(t===7||t===11)return['good',`${t}! A natural!`,'7 or 11 on the first roll = you win the round.'];if([2,3,12].includes(t))return['bad',`${t}… craps!`,'2, 3 or 12 on the first roll = you lose the round.'+(S.own.bird?' You own The Bird — use it!':'')];return['neu',`${t} becomes the POINT`,`Next you keep rolling. Roll a ${t} again to win, but a 7 loses.`];}if(t===S.point)return['good',`${t}! You hit the Point!`,'You win the round.'];if(t===7)return['bad','7… seven out!','Rolling a 7 before your Point loses the round.'];return['neu',`${t}. Nothing happens.`,`Not your Point (${S.point}) and not a 7. Roll again.`];}
+S.repay=rep;if(S.coins>=rep){S.coins-=rep;}else{S.coins=0;if(S.mercy){S.mercy=0;S.spared=1;}else S.loss++;}
+S.rows=BETS.filter(B=>S.bets[B.k]).map(B=>{const w=S.wins.includes(B.k),pr=S.bets[B.k]*B.o*(rk===B.k?2:1);return{cls:w?'w':'l',left:`${B.n} (${S.bets[B.k]})`,right:w?'WON +'+pr:'LOST −'+S.bets[B.k]};});
+S.tallyStep=0;S.phase='recap';if(S.win)sfx.win();else{sfx.lose();document.body.classList.add('shake');setTimeout(()=>document.body.classList.remove('shake'),500);}
+const hold=4200+S.rows.length*400+(S.spared?1800:0);
+speak(S.spared?`${S.msg} You’re broke — but Death spares your fingers. Once.`:S.msg,hold);clearTally();clearAuto();render();runTally();}
+function runTally(){const steps=S.rows.length+2;const tick=()=>{S.tallyStep++;if(S.tallyStep<=S.rows.length)sfx.tally();else if(S.tallyStep===S.rows.length+1){sfx.debt();debtFlash=1;}else sfx.loan();render();if(S.tallyStep<steps){tallyT=setTimeout(tick,380);}else{tallyT=null;scheduleAuto(after,S.win?1600:S.spared?2000:1400);}};tallyT=setTimeout(tick,450);}
+function after(){clearAuto();clearTally();if(S.phase!=='recap')return;if(S.loss>0){S.phase='lose';speak('Can’t pay. Pick a finger to lose. Its powerup dies with it.',6000);render();}else{next();render();}}
+function next(){S.round++;S.coins+=S.round;S.bets={pass:0,hunt:0,seven:0,eleven:0,snake:0};S.bought={};S.spared=0;prevTok={};S.point=null;S.stage='come';S.dice=[0,0];S.comeDice=null;S.loss=0;S.phase='bet';S.tallyStep=0;S.rows=[];sfx.loan();speak(`Round ${S.round}. Death loans you ${S.round} skull${S.round>1?'s':''}. Spend them all — he wants ${2*S.round} back.`,5600);}
+function explain(t){if(S.stage==='come'){if(t===7||t===11)return['good',`${t}! A natural!`,'7 or 11 on the come-out = you win the round.'];if([2,3,12].includes(t))return['bad',`${t}… craps!`,'2, 3 or 12 on the come-out = you lose.'+(S.own.bird?' Use The Bird!':'')];return['neu',`${t} is the POINT`,`Roll ${t} again to win. A 7 loses.`];}if(t===S.point)return['good',`${t}! Point hit!`,'You win the round.'];if(t===7)return['bad','7… seven out!','A 7 before your Point loses.'];return['neu',`${t}. Nothing happens.`,`Need ${S.point} to win, or avoid 7.`];}
 
 /* ---------- layout ---------- */
 function mount(){
 $('#app').innerHTML=`
-<div class="toolbar"><button class="b alt sm" id="mute" onclick="toggleMute()"></button><button class="b alt sm" onclick="sfx.click();S.tut=0;render()">? How to play</button></div>
-<div class="top">
-  <div><div class="logo">${ART.title.svg}</div><div class="tag">a solo craps roguelike about gambling with Death</div><div class="hud" id="hud"></div></div>
-  <div class="death"><div class="portrait">${ART.death.svg}</div><div class="say"><div class="paper" id="say"></div></div></div>
+<div class="chrome">
+  <div class="brand" title="OOPS, I DIED!">${ART.title.svg}</div>
+  <div class="hud" id="hud"></div>
+  <div class="tools"><button class="b alt sm" id="mute" onclick="toggleMute()"></button><button class="b alt sm" onclick="sfx.click();helpMode=1;S.tut=0;render()">?</button></div>
 </div>
-<div class="tray"><span class="lab">Roll zone</span><div id="dice" class="dice"></div></div>
-<div id="notes"></div>
-<div class="stage">
+<div class="goal" id="goal"></div>
+<div class="toast" id="toast" title="Tap to dismiss"><div class="mini">${ART.death.svg}</div><div class="body" id="toastBody"></div></div>
+<div class="hero" id="hero"><span class="lab" id="heroLab">Dice</span><div id="dice" class="dice"></div><div class="powers" id="powers"></div></div>
+<div class="notes" id="notes"></div>
+<div class="stage" id="stage">
   <div class="bar"><div class="barframe"><span class="lab">Skulls</span><div class="bar-stack" id="barStack"></div><div class="bar-n" id="barN"></div></div>
     <button class="reset" id="reset" onclick="resetSpend()" title="Pick up bets and refund fingers bought this round"><i>↺</i>Reset</button></div>
   <div class="board">${ART.board.svg}<div class="ov" id="bov"></div></div>
   <div class="handbox">${ART.hand.svg}<div class="ov" id="hov"></div></div>
 </div>
-<div class="leg">Tap bets to drop skulls. Tap a finger to buy its powerup (cost = the circled number). Spend or wager <b>ALL</b> your skulls each round.</div>
 <div class="acts" id="acts"></div>
 <div id="tut"></div>`;
 window.addEventListener('resize',fitBar);
 }
 const pct=(r,v,pad)=>{pad=pad||0;return `left:${(r[0]-v[0]-pad)/v[2]*100}%;top:${(r[1]-v[1]-pad)/v[3]*100}%;width:${(r[2]-r[0]+2*pad)/v[2]*100}%;height:${(r[3]-r[1]+2*pad)/v[3]*100}%`};
-function fitBar(){const st=$('#barStack');if(!st)return;const bd=$('.board'),bar=$('.bar');if(bd&&bar)bar.style.height=Math.max(300,Math.min(bd.offsetHeight,window.innerHeight-118))+'px';const n=st.querySelectorAll('.skull').length,H=st.clientHeight,W=st.clientWidth;const sk=Math.max(34,Math.min(W-2,58));st.style.setProperty('--sk',sk+'px');const step=n>1?Math.min(sk*.62,(H-sk)/(n-1)):0;st.style.setProperty('--step',Math.max(5,step)+'px');}
+function fitBar(){const st=$('#barStack');if(!st)return;const bd=$('.board'),bar=$('.bar');if(bd&&bar)bar.style.height=Math.max(280,Math.min(bd.offsetHeight,window.innerHeight-140))+'px';const n=st.querySelectorAll('.skull').length,H=st.clientHeight,W=st.clientWidth;const sk=Math.max(34,Math.min(W-2,58));st.style.setProperty('--sk',sk+'px');const step=n>1?Math.min(sk*.62,(H-sk)/(n-1)):0;st.style.setProperty('--step',Math.max(5,step)+'px');}
+function fingerPips(){return FING.map(f=>`<i class="${S.alive[f.k]?'':'dead'}" title="${f.n}"></i>`).join('');}
+function diceHTML(rolling,keep){const canTap=S.phase==='review'&&S.own.index&&!rolling;const showTot=!rolling&&S.dice[0]&&S.phase!=='bet';
+const mid=showTot?`<div class="total"><b>${sum(S.dice)}</b><small>TOTAL</small></div>`:`<div class="total"><b style="opacity:.25">?</b><small>TOTAL</small></div>`;
+const puck=S.point?`<div class="puck"><div>${S.point}<small>POINT</small></div></div>`:'';
+const one=(i)=>{const spin=rolling&&i!==keep;return `<div class="die${canTap?' clickable':''}" ${canTap?`onclick="re(${i})" title="Reroll this die (Point Taken)"`:''}>${die(spin?rd():S.dice[i],spin?Math.floor(Math.random()*90-45):null)}</div>`;};
+return one(0)+mid+one(1)+puck;}
+function renderPowers(){const box=$('#powers');if(!box)return;let h='';
+if(S.phase==='review'){if(S.own.thumb)h+=`<button class="chip" onclick="re(2)"><span class="cost">↺↺</span><span>Thumbs Up<small>Reroll both</small></span></button>`;
+if(S.own.index)h+=`<button class="chip" onclick="re(0)"><span class="cost">↺</span><span>Point Taken<small>Tap a die, or here</small></span></button>`;
+if(S.own.bird&&S.stage==='come'&&[2,3,12].includes(sum(S.dice)))h+=`<button class="chip warn" onclick="bird()"><span class="cost">!</span><span>The Bird<small>Turn craps into a Point</small></span></button>`;}
+box.innerHTML=h;}
 function renderBar(){const avail=Math.max(0,free()),show=Math.min(avail,40);let s='';for(let i=0;i<show;i++)s+=`<span class="skull${i>=prevBar?' new':''}" style="--i:${i};--rot:${((i*37)%13)-6}deg;animation-delay:${Math.min(i-prevBar,8)*30}ms">${SKULL}</span>`;prevBar=show;
 $('#barStack').innerHTML=s||'<span class="allin">ALL<br>IN</span>';
 $('#barN').innerHTML=`<b>${avail}</b><small>free</small><small>of ${S.coins}</small>`;
 $('#reset').disabled=!(S.phase==='bet'&&(tot()>0||Object.keys(S.bought||{}).length>0));fitBar();}
 function tokHTML(B,n){const show=Math.min(n,5),pn=prevTok[B.k]||0;let s='';for(let i=0;i<show;i++)s+=`<span class="sk${i>=pn&&n>pn?' new':''}">${SKULL}</span>`;prevTok[B.k]=n;
 return `<span class="tok" style="${B.tp}"><span class="stk">${s}</span><span class="cnt">${n}</span>${S.phase==='bet'?`<button class="minus" onclick="event.stopPropagation();bet('${B.k}',-1)" title="Take one back">−</button>`:''}</span>`;}
-function renderBoard(){const v=ART.board.view;let h='';const hot=S.phase==='bet'&&free()>0;
-for(const B of BETS){const n=S.bets[B.k];if(!n)prevTok[B.k]=0;h+=`<div class="bhit${hot?' hot':''}" style="${pct(ART.board.cells[B.k],v,0)}" onclick="bet('${B.k}',1)" aria-label="${B.n}">${n?tokHTML(B,n):''}</div>`;}
+function renderBoard(){const v=ART.board.view;let h='';const hot=S.phase==='bet'&&free()>0;const guide=hot&&S.round===1&&tot()===0&&!Object.keys(S.bought||{}).length;
+for(const B of BETS){const n=S.bets[B.k];if(!n)prevTok[B.k]=0;const g=guide&&B.k==='pass'?' guide':'';h+=`<div class="bhit${hot?' hot':''}${g}" style="${pct(ART.board.cells[B.k],v,0)}" onclick="bet('${B.k}',1)" aria-label="${B.n}"><span class="tip">${B.n} · ${B.o}:1 · ${B.how}</span>${n?tokHTML(B,n):''}</div>`;}
 $('#bov').innerHTML=h;}
 function stOf(f){const k=f.k;if(!S.alive[k])return'dead';if(S.phase==='lose')return'pick';if(S.own[k])return'own';if(S.phase==='bet'&&free()>=f.c)return'can';return'idle';}
 function renderHand(){const v=ART.hand.view;let h='';
@@ -274,34 +351,56 @@ for(const f of FING){const st=stOf(f),m={dead:'✕',own:'✓',can:'+',pick:'✂'
 h+=`<div class="fhit ${f.k} ${st}" style="${pct(ART.hand.fingers[f.k],v,3)}" onclick="buy('${f.k}')" title="${f.n} (cost ${f.c}): ${f.d}">${m?`<span class="fst">${m}</span>`:''}</div>`;
 document.querySelectorAll('.handbox .f-'+f.k).forEach(e=>e.setAttribute('data-s',st));}
 $('#hov').innerHTML=h;}
-function renderNotes(){let h='';const t=sum(S.dice);
-if(S.phase==='over'){const r=RANKS.find(r=>S.round>=r[0]);h+=`<div class="over"><div class="tomb">${ART.tomb.svg}<div class="rankmark" style="${pct(ART.tomb.rows[r[2]],ART.tomb.view,0)}"></div></div><div><div class="big">You are dead (again)</div><p>You reached round <b class="A" style="font-size:1.4em">${S.round}</b><br>Rank: <b class="A" style="font-size:1.3em">${r[1]}</b><br>Best this session: ${best}</p><p><i>Death thanks you for your patronage. He’d shake your hand, but… well.</i></p><button class="b" onclick="sfx.lose();init();render()">Die again</button></div></div>`;}
-else{
-if(S.phase==='bet')h+=`<div class='hint'>Tap a bet on the mat to drop a skull. <b>${free()}</b> free skull${free()===1?'':'s'} left.${free()?'':' All in — hit ROLL!'}${S.round===1?' <b>First time? Tap PASS LINE.</b>':''}</div>`;
-if(S.phase==='review'){const x=explain(t);h+=`<div class='res ${x[0]}'>${x[1]}<small>${x[2]}</small></div>`;}
-if(S.phase==='roll')h+=`<div class='hint'>Point is <b>${S.point}</b>. Roll a <b>${S.point}</b> to win — a <b>7</b> loses. Anything else: roll again.</div>`;
-if(S.phase==='ring'||S.phase==='recap')h+=`<div class='stamp ${S.win?'good':'bad'}'><span class='big'>${S.win?'You win!':'You lose!'}</span></div>`;
-if(S.phase==='recap')h+=`<div class='rows'>${S.rows||'<div><span>No bets placed</span></div>'}</div><div class="auto-hint">…Death counts the take…</div>`;
-if(S.phase==='lose')h+=`<div class="hint" style="border-color:var(--hot)">Pick a finger on the hand. Death is waiting.</div>`;}
+function renderGoal(){const g=$('#goal');if(!g)return;if(S.phase==='over'){g.style.display='none';return;}g.style.display='flex';
+const d=2*S.round,short=S.coins<d;
+if(S.phase==='bet')g.innerHTML=`<span class="pill">Cover debt ${debtLabel()}</span><span>${free()?`<b>${free()}</b> skull${free()===1?'':'s'} left to place`:'All placed — ready to roll'}${short?' · <b style="color:var(--hot)">you’re short</b>':''}</span>`;
+else if(S.phase==='roll'||S.phase==='rolling')g.innerHTML=S.stage==='come'?`<span class="pill">Come-out</span><span><b>7 / 11</b> win · <b>2 / 3 / 12</b> lose · else sets Point</span>`:`<span class="pill">Point ${S.point}</span><span>Hit <b>${S.point}</b> to win · <b>7</b> loses · anything else: roll again</span>`;
+else if(S.phase==='review'){const x=explain(sum(S.dice));g.innerHTML=`<span class="pill">${x[1]}</span><span>${x[2]}</span>`;}
+else if(S.phase==='ring')g.innerHTML=`<span class="pill">Ring-a-Ding</span><span>Double the profit of one winning bet</span>`;
+else if(S.phase==='recap')g.innerHTML=`<span class="pill">${S.win?'Paid out':'Busted'}</span><span>Death collects the debt…</span>`;
+else if(S.phase==='lose')g.innerHTML=`<span class="pill" style="background:var(--hot);color:#fff">Sacrifice</span><span>Tap a finger. Its powerup is gone forever.</span>`;
+else g.innerHTML='';}
+function dismissToast(){if(!toastMsg)return;if(toastT){clearTimeout(toastT);toastT=null;}toastMsg='';toastUntil=0;renderToast();}
+function renderToast(){const on=!!toastMsg&&S.phase!=='over';const el=$('#toast');if(!el)return;el.classList.toggle('on',!!on);el.onclick=on?dismissToast:null;if(on)$('#toastBody').innerHTML=`<span class="who">DEATH</span>${toastMsg}<span class="hint">tap to dismiss</span>`;}
+function renderNotes(){let h='';
+if(S.phase==='over'){const r=RANKS.find(r=>S.round>=r[0]);h+=`<div class="over"><div class="tomb">${ART.tomb.svg}<div class="rankmark" style="${pct(ART.tomb.rows[r[2]],ART.tomb.view,0)}"></div></div><div><div class="deathbig"><div class="portrait">${ART.death.svg}</div><div><div class="big">You are dead (again)</div></div></div><p>You reached round <b class="A" style="font-size:1.4em">${S.round}</b><br>Rank: <b class="A" style="font-size:1.3em">${r[1]}</b><br>Best this session: ${best}</p><p><i>Death thanks you for your patronage. He’d shake your hand, but… well.</i></p><button class="b" onclick="sfx.lose();init();render()">Die again</button></div></div>`;}
+else if(S.phase==='review'){const x=explain(sum(S.dice));h+=`<div class="res ${x[0]}">${x[1]}<small>${hasReviewChoices()?'Spend a powerup, or lock it in.':'…locking it in…'}</small></div>`;}
+else if(S.phase==='ring'||(S.phase==='recap'&&S.tallyStep===0))h+=`<div class="stamp ${S.win?'good':'bad'}"><span class="big">${S.win?'You win!':'You lose!'}</span></div>`;
+if(S.phase==='recap'){const rows=(S.rows||[]).map((r,i)=>`<div class="row ${r.cls}${S.tallyStep>i?' show':''}"><span>${r.left}</span><span>${r.right}</span></div>`).join('');
+const debtRow=`<div class="row debt${S.tallyStep>S.rows.length?' show':''}"><span>Death collects</span><span>−${S.repay}</span></div>`;
+const bankRow=`<div class="row bank${S.tallyStep>S.rows.length+1?' show':''}"><span>${S.spared?'Broke — fingers spared':S.loss?'Can’t cover it — finger due':'Bank left'}</span><span>${S.coins}</span></div>`;
+h+=`<div class="tally">${rows}${debtRow}${bankRow}</div>${S.tallyStep>S.rows.length+1?`<div class="auto-hint">${S.loss?'…choose carefully…':S.spared?'…Death was feeling generous…':'…next round…'}</div>`:''}`;}
+if(S.phase==='lose')h+=`<div class="hint warn">Pick a finger on the hand. Death is waiting.</div>`;
+if(S.phase==='bet'&&S.round===1&&tot()===0)h+=`<div class="hint">First round: tap <b>PASS LINE</b> on the mat, then roll.</div>`;
 $('#notes').innerHTML=h;}
-function renderActs(){let h='';const t=sum(S.dice);
-if(S.phase==='bet')h+=`<button class="b" ${free()?'disabled':''} onclick="roll()">${free()?`Spend ${free()} more`:'Roll the bones'}</button>`;
-if(S.phase==='roll')h+=`<button class="b" onclick="roll()">Roll</button>`;
-if(S.phase==='review'){if(S.own.thumb)h+=`<button class="b alt" onclick="re(2)">Reroll both</button>`;if(S.own.index)h+=`<button class="b alt" onclick="re(0)">Reroll die 1</button><button class="b alt" onclick="re(1)">Reroll die 2</button>`;if(S.own.bird&&S.stage==='come'&&[2,3,12].includes(t))h+=`<button class="b alt" onclick="bird()">The Bird</button>`;if(hasReviewChoices())h+=`<button class="b" onclick="cont()">Lock it in</button>`;else h+=`<div class="auto-hint">…locking it in…</div>`;}
-if(S.phase==='ring')h+=`<div class="say2"><b>RING-A-DING:</b> double the profit of which winning bet?</div>`+S.wins.map(k=>`<button class="b alt" onclick="settle('${k}')">${BETS.find(x=>x.k===k).n}</button>`).join('')+`<button class="b" onclick="settle(null)">Skip</button>`;
+function renderActs(){let h='';
+if(S.phase==='bet')h+=`<button class="b" ${free()?'disabled':''} onclick="roll()">${free()?`Place ${free()} more`:'Roll the bones'}</button>`;
+if(S.phase==='roll')h+=`<button class="b" onclick="roll()">${S.stage==='come'?'Roll come-out':'Roll again'}</button>`;
+if(S.phase==='review'){if(hasReviewChoices())h+=`<button class="b" onclick="cont()">Lock it in</button>`;else h+=`<div class="auto-hint">…locking it in…</div>`;}
+if(S.phase==='ring')h+=`<div class="say2"><b>Double which payout?</b></div>`+S.wins.map(k=>`<button class="b alt" onclick="settle('${k}')">${BETS.find(x=>x.k===k).n}</button>`).join('')+`<button class="b" onclick="settle(null)">Skip</button>`;
 $('#acts').innerHTML=h;$('#acts').style.display=h?'flex':'none';}
-function render(){clearAuto();
+function render(){
+$('#app').dataset.phase=S.phase;
 $('#mute').textContent=muted?'Sound off':'Sound on';
-$('#hud').innerHTML=`<span>Round<b>${S.round}</b></span><span>Death wants<b>${S.own.pinky?S.round+'–'+2*S.round:2*S.round}</b></span><span>Skulls<b>${S.coins}</b></span>`;
-$('#say').innerHTML=`<span class="who">DEATH:</span>${S.phase==='recap'?S.recap:S.msg}`;
-$('#dice').className='dice'+(S.go?' go':'')+(S.phase==='rolling'?' tum':'');$('#dice').innerHTML=die(S.dice[0])+die(S.dice[1])+pk();S.go=0;
-renderNotes();renderBar();renderBoard();renderHand();renderActs();
+const danger=S.coins<(S.own.pinky?S.round:2*S.round);
+$('#hud').innerHTML=`<div class="cell">Round<b>${S.round}</b></div><div class="cell${danger?' danger':''}${debtFlash?' flash':''}">Debt<b>${debtLabel()}</b></div><div class="cell">Bank<b>${S.coins}</b></div><div class="cell">Hand<div class="fips">${fingerPips()}</div></div>`;
+if(debtFlash){debtFlash=0;setTimeout(()=>{const c=$('.hud .cell.flash');if(c)c.classList.remove('flash');},600);}
+const labs={bet:'Place bets',roll:'Roll zone',rolling:'Rolling…',review:'Your roll',ring:'Jackpot',recap:'The take',lose:'Sacrifice',over:'Dead'};
+$('#heroLab').textContent=labs[S.phase]||'Dice';
+$('#dice').className='dice'+(S.go?' go':'')+(S.phase==='rolling'?' tum':'');
+$('#dice').innerHTML=diceHTML(S.phase==='rolling');S.go=0;
+renderPowers();renderGoal();renderToast();renderNotes();renderBar();renderBoard();renderHand();renderActs();
 $('#tut').innerHTML=S.tut>=0?tutHTML():'';
-if(S.tut<0){if(S.phase==='recap')scheduleAuto(after,S.win?2400:2000);else if(S.phase==='review'&&!hasReviewChoices())scheduleAuto(()=>{if(S.phase==='review')cont();},1300);}}
+}
 
 /* ---------- tutorial ---------- */
-const TUT=[['You’re dead. Oops.',`<p>Death will let you live a bit longer if you beat him at dice. The catch: <b>every time you can’t pay him, he takes a finger.</b></p><p>You have <b>5 fingers</b>. Lose them all and the game is over. Your score is how many <b>rounds</b> you survive.</p>`],['Skulls and the debt',`<p>Each round Death <b>lends you skulls</b> equal to the round number. Round 1 = 1 skull. Round 4 = 4 skulls.</p><p>At the end he wants <b>double</b> back (round 4 = pay 8). So you have to <b>win extra</b> by gambling.</p>`],['Two dice, add them',`<p>You roll two dice and add them together. That is your total.</p><div class='ex'>${die(3)}<b>+</b>${die(4)}<b>=</b><b>7</b></div>`],['Step 1: the first roll',`<p>The first roll of every round is called the come-out:</p><div class='ex'><b class='win'>7 or 11 = YOU WIN</b></div><div class='ex'><b class='lose'>2, 3 or 12 = YOU LOSE</b></div><p>Any other total (4, 5, 6, 8, 9, 10) becomes your <b>POINT</b>. Remember that number.</p>`],['Step 2: chase the Point',`<p>Now keep rolling until one of these happens:</p><div class='ex'><b class='win'>Roll your Point again = WIN</b></div><div class='ex'><b class='lose'>Roll a 7 = LOSE</b></div><p>Anything else does nothing, just roll again.</p>`],['Betting',`<p>Before rolling, tap the spots on the mat to put skulls down. <b>You must use ALL your skulls</b> (bets or powerups) before you can roll.</p><p><b>Pass Line</b> is the safe 1:1 bet. Long shots pay more and hit less. Made a mistake? Hit <b>RESET</b> beside the skull bar to pick bets back up and refund fingers you bought this round.</p>`],['Fingers are powerups',`<p>Tap a finger on the hand to <b>buy a powerup</b>. Use them after a roll, before you lock it in.</p><p>The circled number is the cost. A white finger is ready to use. A dashed ghost is a finger Death already took.</p>`],['Paying Death',`<p>After the round, Death takes double the round number. If you can’t pay, he takes <b>all your skulls and one finger</b>.</p>`],['Quick tips',`<p>✔ Round 1: put your 1 skull on <b>PASS LINE</b> and roll.<br>✔ Reroll bad results <b>before</b> you lock in.<br>✔ Losing a finger isn’t the end. Losing all five is.</p>`]];
-function tutHTML(){const i=S.tut,t=TUT[i];return `<div class='tut'><div class='tc'><h2>${t[0]}</h2>${t[1]}<div class='dots'>${TUT.map((_,j)=>j===i?'●':'○').join('')}</div><div class='acts'>${i?`<button class='b alt' onclick='sfx.click();S.tut--;render()'>Back</button>`:''}${i<TUT.length-1?`<button class='b' onclick='sfx.click();S.tut++;render()'>Next</button>`:`<button class='b' onclick='sfx.choose();S.tut=-1;seen=1;render()'>Let’s play</button>`}<button class='b alt' onclick='sfx.click();S.tut=-1;seen=1;render()'>Skip</button></div></div></div>`;}
+const TUT=[
+['Survive Death',`<p>Death lends you <b>skulls</b> each round, then takes <b>double</b> back. Win dice bets to stay ahead.</p><p>Can’t pay? He takes a <b>finger</b> — but the <b>first</b> time you’re broke, he spares you. Lose all five fingers and you’re done.</p>`],
+['Two dice',`<p>Add the dice. On the first roll (come-out):</p><div class='ex'><b class='win'>7 or 11 = WIN</b></div><div class='ex'><b class='lose'>2, 3, 12 = LOSE</b></div><p>Anything else becomes your <b>POINT</b>. Then keep rolling: hit the Point to win, roll a 7 to lose.</p><div class='ex'>${die(3)}<b>+</b>${die(4)}<b>=</b><b>7</b></div>`],
+['Spend everything',`<p>Tap the mat to bet skulls. Tap fingers to buy powerups. You must spend <b>ALL</b> skulls before you can roll.</p><p><b>Pass Line</b> is the safe bet. Powerups are used after a roll — tap a die to reroll one if you own Point Taken.</p><p>Hit <b>RESET</b> to undo bets and finger buys from this round.</p>`]
+];
+const HELP_EXTRA=`<div class="help-extra"><p><b>Bets:</b> Pass 1:1 · Point Hunter 2:1 · Lucky Seven 4:1 · Eleven 15:1 · Snake Eyes 30:1</p><p><b>Fingers:</b> Thumbs Up (2) reroll both · Point Taken (3) reroll one · The Bird (1) save a craps come-out · Ring-a-Ding (4) double a win · Pinky Promise (1) cheaper debt on a win, or lose a finger on a loss.</p></div>`;
+function tutHTML(){const i=S.tut,t=TUT[i];return `<div class='tut'><div class='tc'><h2>${t[0]}</h2>${t[1]}${helpMode&&i===TUT.length-1?HELP_EXTRA:''}<div class='dots'>${TUT.map((_,j)=>j===i?'●':'○').join('')}</div><div class='acts'>${i?`<button class='b alt' onclick='sfx.click();S.tut--;render()'>Back</button>`:''}${i<TUT.length-1?`<button class='b' onclick='sfx.click();S.tut++;render()'>Next</button>`:`<button class='b' onclick='sfx.choose();S.tut=-1;seen=1;helpMode=0;render()'>Let’s play</button>`}<button class='b alt' onclick='sfx.click();S.tut=-1;seen=1;helpMode=0;render()'>Skip</button></div></div></div>`;}
 
 init();mount();render();
 </script></body></html>
